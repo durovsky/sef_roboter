@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<robot name="sef_roboter" xmlns:xacro="http://ros.org/wiki/xacro">
+	<!-- Import Rviz colors -->
+ 	<xacro:include filename="$(find sef_roboter_support)/urdf/materials.xacro" />
+	<!-- Import Gazebo configuration  -->
+ 	<xacro:include filename="$(find sef_roboter_support)/urdf/sr25.gazebo" />
+	<!-- Import Model -->
+	<xacro:include filename="$(find sef_roboter_support)/urdf/sr25_macro.xacro" />
+	<xacro:sef_roboter prefix=""/>
+</robot>

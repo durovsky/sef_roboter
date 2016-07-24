@@ -1,0 +1,8 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: sef_roboter_support
+    relative_path: urdf/sr25.urdf
+  SRDF:
+    relative_path: config/sef_roboter_sr25.srdf
+  CONFIG:
+    generated_timestamp: 1421149487

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package>
+	<name>sef_roboter_bringup</name>
+	<version>1.0.0</version>
+	<description>Sef Roboter Bringup</description>
+
+	<maintainer email="durovsky987@gmail.com">Frantisek Durovsky</maintainer>
+
+	<license>BSD</license>
+
+	<url type="repository">https://github.com/durovsky/sef_roboter_gazebo_moveit</url>
+	<author email="durovsky987@gmail.com">Frantisek Durovsky</author>
+	
+	<buildtool_depend>catkin</buildtool_depend>
+	<run_depend>sef_roboter_support</run_depend>
+	<run_depend>sef_roboter_control</run_depend>
+	<run_depend>sef_roboter_gazebo</run_depend>
+	<run_depend>sef_roboter_moveit_config</run_depend>
+	
+	<export>  
+	</export>
+</package>
