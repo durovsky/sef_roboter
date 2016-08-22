@@ -185,7 +185,7 @@
 			<child link="base_link"/>			
 	      </joint>
 	         
-	      <joint name="${prefix}joint_1" type="continuous">
+	      <joint name="${prefix}joint_1" type="revolute">
 			<parent link="${prefix}base_link"/>
 			<child link="${prefix}link_1"/>
 			<origin xyz="0 0 0.075738" rpy="1.5708 0 -1.5745"/>
@@ -194,7 +194,7 @@
  			<dynamics damping="0.7" friction="100"/> 
 	      </joint>
 	      
-	      <joint name="${prefix}joint_2" type="continuous">
+	      <joint name="${prefix}joint_2" type="revolute">
 			<parent link="${prefix}link_1"/>
 			<child link="${prefix}link_2"/>
 			<origin xyz="0 0.24264 -0.29599" rpy="1.5687 0 0"/>
@@ -203,7 +203,7 @@
 			<dynamics damping="0.7" friction="100"/> 
 	      </joint>
 	      
-	      <joint name="${prefix}joint_3" type="continuous">
+	      <joint name="${prefix}joint_3" type="revolute">
 			<parent link="${prefix}link_2"/>
 			<child link="${prefix}link_3"/>
 			<origin xyz="0 0 -0.79724" rpy="0.005529 0 0"/>
@@ -212,7 +212,7 @@
 		        <dynamics damping="0.7" friction="100"/> 
 	      </joint>
 	      
-	      <joint name="${prefix}joint_4" type="continuous">
+	      <joint name="${prefix}joint_4" type="revolute">
 			<parent link="${prefix}link_3"/>
 			<child link="${prefix}link_4"/>
 			<origin xyz="0 -0.15811 0" rpy="0 0.0014787 0"/>
@@ -221,7 +221,7 @@
 			<dynamics damping="0.7" friction="100"/>
               </joint>
 	      
-	      <joint name="${prefix}joint_5" type="continuous">
+	      <joint name="${prefix}joint_5" type="revolute">
 			<parent link="${prefix}link_4"/>
 			<child link="${prefix}link_5"/>
 			<origin xyz="0 -0.58433 0" rpy="0 0 -0.033693"/>
@@ -230,7 +230,7 @@
 			<dynamics damping="0.7" friction="100"/>
               </joint>
 	      
-	      <joint name="${prefix}joint_6" type="continuous">
+	      <joint name="${prefix}joint_6" type="revolute">
 			<parent link="${prefix}link_5"/>
 			<child link="${prefix}link_tool"/>
 			<origin xyz="0 -0.164051291252016 -0.00548103448275694" rpy="-1.5707963267949 0 3.14159265358979"/>
