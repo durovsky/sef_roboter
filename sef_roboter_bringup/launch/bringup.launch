@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
 <launch>
   <include file="$(find sef_roboter_gazebo)/launch/sef_roboter_world.launch" /> 
-  <include file="$(find sef_roboter_control)/launch/sef_roboter_control.launch" /> 
+  <include file="$(find sef_roboter_ros_control)/launch/joint_trajectory_simulation.launch" /> 
 </launch>

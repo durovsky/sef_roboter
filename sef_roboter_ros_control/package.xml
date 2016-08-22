@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>sef_roboter_control</name>
+  <name>sef_roboter_ros_control</name>
   <version>0.0.0</version>
   <description>The sef_roboter_control package</description>
 
