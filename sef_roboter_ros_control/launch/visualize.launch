@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- Load example URDF -->
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find sef_roboter_support)/urdf/sr25.xacro'" />
+    
+  <!-- Show in Rviz  -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find sef_roboter_support)/config/sr25.rviz"/>
+
+</launch>
+

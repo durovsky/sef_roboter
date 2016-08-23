@@ -1,0 +1,83 @@
+- label: CU_input
+  type: input
+  size: 4
+  starting_address: 512
+  topic: cu_input_topic
+
+- label: CU_output
+  type: output
+  size: 4
+  starting_address: 512
+  topic: cu_output_topic
+
+- label: Drive_1_input
+  type: input
+  size: 32
+  starting_address: 516
+  topic: drive_1_input_topic
+
+- label: Drive_1_output
+  type: output
+  size: 12
+  starting_address: 516
+  topic: drive_1_output_topic
+  
+- label: Drive_2_input
+  type: input
+  size: 32
+  starting_address: 548
+  topic: drive_2_input_topic
+
+- label: Drive_2_output
+  type: output
+  size: 12
+  starting_address: 528
+  topic: drive_2_output_topic
+  
+- label: Drive_3_input
+  type: input
+  size: 32
+  starting_address: 580
+  topic: drive_3_input_topic
+
+- label: Drive_3_output
+  type: output
+  size: 12
+  starting_address: 540
+  topic: drive_3_output_topic
+  
+- label: Drive_4_input
+  type: input
+  size: 32
+  starting_address: 612
+  topic: drive_4_input_topic
+
+- label: Drive_4_output
+  type: output
+  size: 12
+  starting_address: 552
+  topic: drive_4_output_topic
+  
+- label: Drive_5_input
+  type: input
+  size: 32
+  starting_address: 644
+  topic: drive_5_input_topic
+
+- label: Drive_5_output
+  type: output
+  size: 12
+  starting_address: 564
+  topic: drive_5_output_topic
+  
+- label: Drive_6_input
+  type: input
+  size: 32
+  starting_address: 676
+  topic: drive_6_input_topic
+
+- label: Drive_6_output
+  type: output
+  size: 12
+  starting_address: 576
+  topic: drive_6_output_topic

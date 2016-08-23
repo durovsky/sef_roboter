@@ -1,0 +1,86 @@
+# ros_control_boilerplate Settings -----------------------
+# Settings for ros_control control loop
+generic_hw_control_loop:
+  loop_hz: 100
+  cycle_time_error_threshold: 0.02
+
+# Settings for ros_control hardware interface
+hardware_interface:
+   joints:
+      - joint_1
+      - joint_2
+      - joint_3
+      - joint_4
+      - joint_5
+      - joint_6
+      
+# Publish all joint states ----------------------------------
+# Creates the /joint_states topic necessary in ROS
+joint_state_controller:
+   type:         joint_state_controller/JointStateController
+   publish_rate: 50
+
+# Joint Trajectory Controller -------------------------------
+# For detailed explanations of parameter see http://wiki.ros.org/joint_trajectory_controller
+velocity_trajectory_controller:
+   type: velocity_controllers/JointTrajectoryController
+   # These joints can likely just be copied from the hardware_interface list above
+   joints:
+      - joint_1
+      - joint_2
+      - joint_3
+      - joint_4
+      - joint_5
+      - joint_6
+   constraints:
+      goal_time: 1.0
+      stopped_velocity_tolerance: 0.2 # Defaults to 0.01
+      joint_1:
+          trajectory: 0.20
+          goal:       0.15
+      joint_2:
+          trajectory: 0.60
+          goal:       0.15
+      joint_3:
+          trajectory: 0.60
+          goal:       0.15
+      joint_4:
+          trajectory: 0.60
+          goal:       0.15
+      joint_5:
+          trajectory: 0.60
+          goal:       0.15
+      joint_6:
+          trajectory: 0.60
+          goal:       0.15
+          
+   gains:
+      joint_1: {p: 3.5,  i: 0.0, d: 0}
+      joint_2: {p: 1.0,  i: 0.0, d: 0}
+      joint_3: {p: 1.0,  i: 0.0, d: 0}
+      joint_4: {p: 1.0,  i: 0.0, d: 0}
+      joint_5: {p: 1.0,  i: 0.0, d: 0}
+      joint_6: {p: 1.0,  i: 0.0, d: 0}
+      
+   state_publish_rate:  50 # Defaults to 50
+   action_monitor_rate: 20 # Defaults to 20
+   #hold_trajectory_duration: 0 # Defaults to 0.5
+
+# Individual Velocity Controllers ---------------------------------------
+# Allows to send individual ROS msg of Float64 to each joint separately
+#joint1_velocity_controller:
+#   type: velocity_controllers/JointVelocityController
+#   joint: joint_1
+#   pid: {p: 100.0, i: 10, d: 10.0}
+#joint2_position_controller:
+#   type: position_controllers/JointPositionController
+#   joint: joint2
+#   pid: {p: 100.0, i: 0.01, d: 10.0}
+
+# Group Position Controllers ---------------------------------------
+# Allows to send single ROS msg of Float64MultiArray to all joints
+#joint_position_controller:
+#   type: position_controllers/JointGroupPositionController
+#   joints:
+#     - joint1
+#     - joint2
