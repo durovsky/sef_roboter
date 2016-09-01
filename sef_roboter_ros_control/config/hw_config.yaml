@@ -12,7 +12,7 @@
 
 - label: Drive_1_input
   type: input
-  size: 32
+  size: 28
   starting_address: 516
   topic: drive_1_input_topic
 
@@ -24,60 +24,60 @@
   
 - label: Drive_2_input
   type: input
-  size: 32
-  starting_address: 548
+  size: 28
+  starting_address: 544
   topic: drive_2_input_topic
 
 - label: Drive_2_output
   type: output
   size: 12
-  starting_address: 528
+  starting_address: 544
   topic: drive_2_output_topic
   
 - label: Drive_3_input
   type: input
-  size: 32
-  starting_address: 580
+  size: 28
+  starting_address: 572
   topic: drive_3_input_topic
 
 - label: Drive_3_output
   type: output
   size: 12
-  starting_address: 540
+  starting_address: 572
   topic: drive_3_output_topic
   
 - label: Drive_4_input
   type: input
-  size: 32
-  starting_address: 612
+  size: 28
+  starting_address: 600
   topic: drive_4_input_topic
 
 - label: Drive_4_output
   type: output
   size: 12
-  starting_address: 552
+  starting_address: 600
   topic: drive_4_output_topic
   
 - label: Drive_5_input
   type: input
-  size: 32
-  starting_address: 644
+  size: 28
+  starting_address: 628
   topic: drive_5_input_topic
 
 - label: Drive_5_output
   type: output
   size: 12
-  starting_address: 564
+  starting_address: 628
   topic: drive_5_output_topic
   
 - label: Drive_6_input
   type: input
-  size: 32
-  starting_address: 676
+  size: 28
+  starting_address: 656
   topic: drive_6_input_topic
 
 - label: Drive_6_output
   type: output
   size: 12
-  starting_address: 576
+  starting_address: 656
   topic: drive_6_output_topic
