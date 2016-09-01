@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <launch>
 
+  <!-- Passed argument to distinguish between real and simulated robot -->
+  <arg name="real_robot"/>
+
   <include file="$(find sef_roboter_moveit_config)/launch/planning_context.launch" />
 
   <!-- GDB Debug Option -->
@@ -31,6 +34,7 @@
     <arg name="moveit_manage_controllers" value="true" />
     <arg name="moveit_controller_manager" value="sef_roboter" unless="$(arg fake_execution)"/>
     <arg name="moveit_controller_manager" value="fake" if="$(arg fake_execution)"/>
+    <arg name="real_robot" value="$(arg real_robot)"/>
   </include>
 
   <!-- Sensors Functionality -->

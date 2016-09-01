@@ -1,13 +1,16 @@
 <launch>
+
+  <!-- Passed argument to distinguish between real and simulated robot -->
+  <arg name="real_robot"/>
+
   <arg name="moveit_controller_manager"
        default="moveit_simple_controller_manager/MoveItSimpleControllerManager"/>
   <param name="moveit_controller_manager"
        value="$(arg moveit_controller_manager)"/>
 
-<!--   <arg name="controller_manager_name" -->
-<!--        default="simple_controller_manager" /> -->
-<!--   <param name="controller_manager_name"  -->
-<!--        value="$(arg controller_manager_name)" /> -->
-  
-  <rosparam file="$(find sef_roboter_moveit_config)/config/controllers.yaml"/>
+  <arg name="real" value="$(arg real_robot)"/>
+
+  <rosparam file="$(find sef_roboter_moveit_config)/config/controllers_real.yaml" if="$(arg real_robot)" />
+  <rosparam file="$(find sef_roboter_moveit_config)/config/controllers_gazebo.yaml" unless="$(arg real_robot)"/>
+
 </launch>

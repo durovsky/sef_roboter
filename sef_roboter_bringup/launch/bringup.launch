@@ -1,5 +1,0 @@
-<?xml version="1.0" ?>
-<launch>
-  <include file="$(find sef_roboter_gazebo)/launch/sef_roboter_world.launch" /> 
-  <include file="$(find sef_roboter_ros_control)/launch/gazebo.launch" /> 
-</launch>
