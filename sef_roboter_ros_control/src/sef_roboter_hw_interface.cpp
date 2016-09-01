@@ -1,7 +1,7 @@
 /*********************************************************************
  * Software License Agreement (BSD License)
  *
- *  Copyright (c) 2015, University of Colorado, Boulder
+ *  Copyright (c) 2016, Technical University Kosice, Slovakia
  *  All rights reserved.
  *
  *  Redistribution and use in source and binary forms, with or without
@@ -32,9 +32,8 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************/
 
-/* Author: Dave Coleman
-   Desc:   Example ros_control hardware interface blank template for the RRBot
-           For a more detailed simulation example, see sim_hw_interface.cpp
+/* Author: Frantisek Durovsky Coleman
+   Desc:   ros_control hardware interface for the sef_roboter_sr25 powered by SINAMICS S120 Drives
 */
 
 #include <sef_roboter_ros_control/sef_roboter_hw_interface.h>
@@ -52,334 +51,35 @@ SefRoboterHWInterface::SefRoboterHWInterface(ros::NodeHandle &nh, urdf::Model *u
   pub_drive_04_output_topic = nh.advertise<std_msgs::UInt8MultiArray>("/drive_4_output_topic", 1);
   pub_drive_05_output_topic = nh.advertise<std_msgs::UInt8MultiArray>("/drive_5_output_topic", 1);
   pub_drive_06_output_topic = nh.advertise<std_msgs::UInt8MultiArray>("/drive_6_output_topic", 1);
-    
+  pub_trajectory = nh.advertise<trajectory_msgs::JointTrajectory>("/sef_roboter/velocity_trajectory_controller/command", 1);
+
   ROS_INFO_NAMED("sef_roboter_hw_interface", "SefRoboterHWInterface Ready.");
 }
 
-void SefRoboterHWInterface::drive01TelegramCallback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data)
+SefRoboterHWInterface::~SefRoboterHWInterface()
 {
-  
-  int received_byte_array[DRIVE_TELEGRAM_RECEIVE_SIZE];
-  int position_raw, velocity_raw, effort_raw;
-  double motor_position_rad, motor_effort_Nm, motor_velocity_rpm; 
-    
-  for(int i = 0; i < DRIVE_TELEGRAM_RECEIVE_SIZE; i++)
-    received_byte_array[i] = callback_data->data[i];
-   	     
-  //Get actual position as 4 unsigned chars 
-  position_raw = (received_byte_array[10] << 24) +
-	         (received_byte_array[11] << 16) +
-	         (received_byte_array[12] << 8)  +
-	          received_byte_array[13];
-
-  //Get actual velocity as 4 unsigned chars
-  velocity_raw = (received_byte_array[2] << 24) + 
-	         (received_byte_array[3] << 16) +
-	         (received_byte_array[4] << 8)  +
-	          received_byte_array[5];
-		 
-  effort_raw = (received_byte_array[28] << 24) + 
-               (received_byte_array[29] << 16) + 
-	       (received_byte_array[30] << 8) +
-	        received_byte_array[31];
-
-	      
-  //Motor position in radians 
-  motor_position_rad = (double)position_raw / RESOLVER_RESOLUTION;
-	
-  //Joint Position in radians
-  drive_01_actual_position_rad = motor_position_rad / DRIVE_01_RATIO;
-  
-  //Motor Velocity rpm
-  motor_velocity_rpm = (double)velocity_raw * (DRIVE_01_MAX_MOTOR_VELOCITY / 0x40000000);
-   
-  //Joint Velocity rad/s 
-  drive_01_actual_velocity_rad_s = motor_velocity_rpm * 2 * M_PI / 60 / DRIVE_01_RATIO; 
-  
-  //Motor Effort in Nm
-  motor_effort_Nm = (double)effort_raw * (DRIVE_01_MAX_MOTOR_TORQUE / 0x40000000);
-  
-  //Joint Effort in Nm
-  drive_01_actual_effort_Nm = (double)motor_effort_Nm * DRIVE_01_RATIO;
-  
-/*  ROS_INFO("Position: %10.6f, Velocity: %14.10f, Effort: %10.6f", drive_01_actual_position_rad, 
-	                                                         drive_01_actual_velocity_rad_s,
-								 drive_01_actual_effort_Nm);  */
-  
 }
-
-void SefRoboterHWInterface::drive02TelegramCallback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data)
-{
-  int received_byte_array[DRIVE_TELEGRAM_RECEIVE_SIZE];
-  int position_raw, velocity_raw, effort_raw;
-  double motor_position_rad, motor_effort_Nm, motor_velocity_rpm; 
-    
-  for(int i = 0; i < DRIVE_TELEGRAM_RECEIVE_SIZE; i++)
-    received_byte_array[i] = callback_data->data[i];
-   	     
-  //Get actual position as 4 unsigned chars 
-  position_raw = (received_byte_array[10] << 24) +
-	         (received_byte_array[11] << 16) +
-	         (received_byte_array[12] << 8)  +
-	          received_byte_array[13];
-
-  //Get actual velocity as 4 unsigned chars
-  velocity_raw = (received_byte_array[2] << 24) + 
-	         (received_byte_array[3] << 16) +
-	         (received_byte_array[4] << 8)  +
-	          received_byte_array[5];
-		 
-  effort_raw = (received_byte_array[28] << 24) + 
-               (received_byte_array[29] << 16) + 
-	       (received_byte_array[30] << 8) +
-	        received_byte_array[31];
-
-	      
-  //Motor position in radians 
-  motor_position_rad = (double)position_raw / RESOLVER_RESOLUTION;
-	
-  //Joint Position in radians
-  drive_02_actual_position_rad = motor_position_rad / DRIVE_02_RATIO;
-  
-  //Motor Velocity rpm
-  motor_velocity_rpm = (double)velocity_raw * (DRIVE_02_MAX_MOTOR_VELOCITY / 0x40000000);
-   
-  //Joint Velocity rad/s 
-  drive_02_actual_velocity_rad_s = motor_velocity_rpm * 2 * M_PI / 60 / DRIVE_02_RATIO; 
-  
-  //Motor Effort in Nm
-  motor_effort_Nm = (double)effort_raw * (DRIVE_02_MAX_MOTOR_TORQUE / 0x40000000);
-  
-  //Joint Effort in Nm
-  drive_02_actual_effort_Nm = (double)motor_effort_Nm * DRIVE_02_RATIO;
-  
-/*  ROS_INFO("Position: %10.6f, Velocity: %14.10f, Effort: %10.6f", drive_02_actual_position_rad, 
-	                                                         drive_02_actual_velocity_rad_s,
-								 drive_02_actual_effort_Nm);  */
-}
-
-void SefRoboterHWInterface::drive03TelegramCallback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data)
-{
-  int received_byte_array[DRIVE_TELEGRAM_RECEIVE_SIZE];
-  int position_raw, velocity_raw, effort_raw;
-  double motor_position_rad, motor_effort_Nm, motor_velocity_rpm; 
-    
-  for(int i = 0; i < DRIVE_TELEGRAM_RECEIVE_SIZE; i++)
-    received_byte_array[i] = callback_data->data[i];
-   	     
-  //Get actual position as 4 unsigned chars 
-  position_raw = (received_byte_array[10] << 24) +
-	         (received_byte_array[11] << 16) +
-	         (received_byte_array[12] << 8)  +
-	          received_byte_array[13];
-
-  //Get actual velocity as 4 unsigned chars
-  velocity_raw = (received_byte_array[2] << 24) + 
-	         (received_byte_array[3] << 16) +
-	         (received_byte_array[4] << 8)  +
-	          received_byte_array[5];
-		 
-  effort_raw = (received_byte_array[28] << 24) + 
-               (received_byte_array[29] << 16) + 
-	       (received_byte_array[30] << 8) +
-	        received_byte_array[31];
-
-	      
-  //Motor position in radians 
-  motor_position_rad = (double)position_raw / RESOLVER_RESOLUTION;
-	
-  //Joint Position in radians
-  drive_03_actual_position_rad = motor_position_rad / DRIVE_03_RATIO;
-  
-  //Motor Velocity rpm
-  motor_velocity_rpm = (double)velocity_raw * (DRIVE_03_MAX_MOTOR_VELOCITY / 0x40000000);
-   
-  //Joint Velocity rad/s 
-  drive_03_actual_velocity_rad_s = motor_velocity_rpm * 2 * M_PI / 60 / DRIVE_03_RATIO; 
-  
-  //Motor Effort in Nm
-  motor_effort_Nm = (double)effort_raw * (DRIVE_03_MAX_MOTOR_TORQUE / 0x40000000);
-  
-  //Joint Effort in Nm
-  drive_03_actual_effort_Nm = (double)motor_effort_Nm * DRIVE_03_RATIO;
-  
- /* ROS_INFO("Position: %10.6f, Velocity: %14.10f, Effort: %10.6f", drive_03_actual_position_rad, 
-	                                                          drive_03_actual_velocity_rad_s,
-								  drive_03_actual_effort_Nm);  */  
-}
-
-void SefRoboterHWInterface::drive04TelegramCallback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data)
-{
-  int received_byte_array[DRIVE_TELEGRAM_RECEIVE_SIZE];
-  int position_raw, velocity_raw, effort_raw;
-  double motor_position_rad, motor_effort_Nm, motor_velocity_rpm; 
-    
-  for(int i = 0; i < DRIVE_TELEGRAM_RECEIVE_SIZE; i++)
-    received_byte_array[i] = callback_data->data[i];
-   	     
-  //Get actual position as 4 unsigned chars 
-  position_raw = (received_byte_array[10] << 24) +
-	         (received_byte_array[11] << 16) +
-	         (received_byte_array[12] << 8)  +
-	          received_byte_array[13];
-
-  //Get actual velocity as 4 unsigned chars
-  velocity_raw = (received_byte_array[2] << 24) + 
-	         (received_byte_array[3] << 16) +
-	         (received_byte_array[4] << 8)  +
-	          received_byte_array[5];
-		 
-  effort_raw = (received_byte_array[28] << 24) + 
-               (received_byte_array[29] << 16) + 
-	       (received_byte_array[30] << 8) +
-	        received_byte_array[31];
-
-	      
-  //Motor position in radians 
-  motor_position_rad = (double)position_raw / RESOLVER_RESOLUTION;
-	
-  //Joint Position in radians
-  drive_04_actual_position_rad = motor_position_rad / DRIVE_04_RATIO;
-  
-  //Motor Velocity rpm
-  motor_velocity_rpm = (double)velocity_raw * (DRIVE_04_MAX_MOTOR_VELOCITY / 0x40000000);
-   
-  //Joint Velocity rad/s 
-  drive_04_actual_velocity_rad_s = motor_velocity_rpm * 2 * M_PI / 60 / DRIVE_04_RATIO; 
-  
-  //Motor Effort in Nm
-  motor_effort_Nm = (double)effort_raw * (DRIVE_04_MAX_MOTOR_TORQUE / 0x40000000);
-  
-  //Joint Effort in Nm
-  drive_04_actual_effort_Nm = (double)motor_effort_Nm * DRIVE_04_RATIO;
-  
-/*  ROS_INFO("Position: %10.6f, Velocity: %14.10f, Effort: %10.6f", drive_04_actual_position_rad, 
-	                                                         drive_04_actual_velocity_rad_s,
-								 drive_04_actual_effort_Nm);  */
-  
-}
-
-void SefRoboterHWInterface::drive05TelegramCallback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data)
-{
-  int received_byte_array[DRIVE_TELEGRAM_RECEIVE_SIZE];
-  int position_raw, velocity_raw, effort_raw;
-  double motor_position_rad, motor_effort_Nm, motor_velocity_rpm; 
-    
-  for(int i = 0; i < DRIVE_TELEGRAM_RECEIVE_SIZE; i++)
-    received_byte_array[i] = callback_data->data[i];
-   	     
-  //Get actual position as 4 unsigned chars 
-  position_raw = (received_byte_array[10] << 24) +
-	         (received_byte_array[11] << 16) +
-	         (received_byte_array[12] << 8)  +
-	          received_byte_array[13];
-
-  //Get actual velocity as 4 unsigned chars
-  velocity_raw = (received_byte_array[2] << 24) + 
-	         (received_byte_array[3] << 16) +
-	         (received_byte_array[4] << 8)  +
-	          received_byte_array[5];
-		 
-  effort_raw = (received_byte_array[28] << 24) + 
-               (received_byte_array[29] << 16) + 
-	       (received_byte_array[30] << 8) +
-	        received_byte_array[31];
-
-	      
-  //Motor position in radians 
-  motor_position_rad = (double)position_raw / RESOLVER_RESOLUTION;
-	
-  //Joint Position in radians
-  drive_05_actual_position_rad = motor_position_rad / DRIVE_05_RATIO;
-  
-  //Motor Velocity rpm
-  motor_velocity_rpm = (double)velocity_raw * (DRIVE_05_MAX_MOTOR_VELOCITY / 0x40000000);
-   
-  //Joint Velocity rad/s 
-  drive_05_actual_velocity_rad_s = motor_velocity_rpm * 2 * M_PI / 60 / DRIVE_05_RATIO; 
-  
-  //Motor Effort in Nm
-  motor_effort_Nm = (double)effort_raw * (DRIVE_05_MAX_MOTOR_TORQUE / 0x40000000);
-  
-  //Joint Effort in Nm
-  drive_05_actual_effort_Nm = (double)motor_effort_Nm * DRIVE_05_RATIO;
-  
-/*  ROS_INFO("Position: %10.6f, Velocity: %14.10f, Effort: %10.6f", drive_05_actual_position_rad, 
-	                                                         drive_05_actual_velocity_rad_s,
-								 drive_05_actual_effort_Nm);  */  
-}
-
-void SefRoboterHWInterface::drive06TelegramCallback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data)
-{
-  int received_byte_array[DRIVE_TELEGRAM_RECEIVE_SIZE];
-  int position_raw, velocity_raw, effort_raw;
-  double motor_position_rad, motor_effort_Nm, motor_velocity_rpm; 
-    
-  for(int i = 0; i < DRIVE_TELEGRAM_RECEIVE_SIZE; i++)
-    received_byte_array[i] = callback_data->data[i];
-   	     
-  //Get actual position as 4 unsigned chars 
-  position_raw = (received_byte_array[10] << 24) +
-	         (received_byte_array[11] << 16) +
-	         (received_byte_array[12] << 8)  +
-	          received_byte_array[13];
-
-  //Get actual velocity as 4 unsigned chars
-  velocity_raw = (received_byte_array[2] << 24) + 
-	         (received_byte_array[3] << 16) +
-	         (received_byte_array[4] << 8)  +
-	          received_byte_array[5];
-		 
-  effort_raw = (received_byte_array[28] << 24) + 
-               (received_byte_array[29] << 16) + 
-	       (received_byte_array[30] << 8) +
-	        received_byte_array[31];
-
-	      
-  //Motor position in radians 
-  motor_position_rad = (double)position_raw / RESOLVER_RESOLUTION;
-	
-  //Joint Position in radians
-  drive_06_actual_position_rad = motor_position_rad / DRIVE_06_RATIO;
-  
-  //Motor Velocity rpm
-  motor_velocity_rpm = (double)velocity_raw * (DRIVE_06_MAX_MOTOR_VELOCITY / 0x40000000);
-   
-  //Joint Velocity rad/s 
-  drive_06_actual_velocity_rad_s = motor_velocity_rpm * 2 * M_PI / 60 / DRIVE_06_RATIO; 
-  
-  //Motor Effort in Nm
-  motor_effort_Nm = (double)effort_raw * (DRIVE_06_MAX_MOTOR_TORQUE / 0x40000000);
-  
-  //Joint Effort in Nm
-  drive_06_actual_effort_Nm = (double)motor_effort_Nm * DRIVE_06_RATIO;
-  
-/*  ROS_INFO("Position: %10.6f, Velocity: %14.10f, Effort: %10.6f", drive_06_actual_position_rad, 
-	                                                            drive_06_actual_velocity_rad_s,
-								    drive_06_actual_effort_Nm); */  
-}
-
 
 void SefRoboterHWInterface::initDrives(void)
 {
-  //Telegram 4 
+  //Telegram 4
   unsigned char drive_telegram_4[DRIVE_TELEGRAM_TRANSMIT_SIZE];
 
   //std_msgs::MultiArray variables
   std_msgs::MultiArrayDimension msg_dim;
   std_msgs::UInt8MultiArray msg;
-   
+
   //-------------------------------------------
   //Send initialization DRIVE telegram
   // - set all necessary bytes except ON/OFF1 to true
   // - set reference point to true
   //-------------------------------------------
- 
+
   drive_telegram_4[0] =  0b00000100;   //STW1 high
   drive_telegram_4[1] =  0b10111110;   //STW1 low
   drive_telegram_4[2] =  0b00000000;   //NSOLL_B1 high
   drive_telegram_4[3] =  0b00000000;   //NSOLL_B1 low
-  drive_telegram_4[4] =  0b00000000;   //NSOLL_B2_high 
+  drive_telegram_4[4] =  0b00000000;   //NSOLL_B2_high
   drive_telegram_4[5] =  0b00000010;   //NSOLL_B2_low
   drive_telegram_4[6] =  0b00000000;   //STW2 high
   drive_telegram_4[7] =  0b00000000;   //STW2 low
@@ -388,7 +88,7 @@ void SefRoboterHWInterface::initDrives(void)
   drive_telegram_4[9] =   0;  //G1_STW low
   drive_telegram_4[10] =  0;  //G2_STW high
   drive_telegram_4[11] =  0;  //G2_STW low
-  
+
   // Drive 01
   msg_dim.label = "Drive_1_output";
   msg_dim.size = DRIVE_TELEGRAM_TRANSMIT_SIZE;
@@ -401,7 +101,9 @@ void SefRoboterHWInterface::initDrives(void)
 
   //Publish the message
   pub_drive_01_output_topic.publish(msg);
-    
+  ROS_INFO_NAMED("sef_roboter_hw_interface", "Drive 1 initialization telegram sent!");
+
+
   // Drive 02
   msg_dim.label = "Drive_2_output";
   msg_dim.size = DRIVE_TELEGRAM_TRANSMIT_SIZE;
@@ -414,7 +116,9 @@ void SefRoboterHWInterface::initDrives(void)
 
   //Publish the message
   pub_drive_02_output_topic.publish(msg);
-  
+  ROS_INFO_NAMED("sef_roboter_hw_interface", "Drive 2 initialization telegram sent!");
+
+
   // Drive 03
   msg_dim.label = "Drive_3_output";
   msg_dim.size = DRIVE_TELEGRAM_TRANSMIT_SIZE;
@@ -427,7 +131,9 @@ void SefRoboterHWInterface::initDrives(void)
 
   //Publish the message
   pub_drive_03_output_topic.publish(msg);
-    
+  ROS_INFO_NAMED("sef_roboter_hw_interface", "Drive 3 initialization telegram sent!");
+
+
   // Drive 04
   msg_dim.label = "Drive_4_output";
   msg_dim.size = DRIVE_TELEGRAM_TRANSMIT_SIZE;
@@ -440,7 +146,9 @@ void SefRoboterHWInterface::initDrives(void)
 
   //Publish the message
   pub_drive_04_output_topic.publish(msg);
-  
+  ROS_INFO_NAMED("sef_roboter_hw_interface", "Drive 4 initialization telegram sent!");
+
+
   // Drive 05
   msg_dim.label = "Drive_5_output";
   msg_dim.size = DRIVE_TELEGRAM_TRANSMIT_SIZE;
@@ -453,7 +161,9 @@ void SefRoboterHWInterface::initDrives(void)
 
   //Publish the message
   pub_drive_05_output_topic.publish(msg);
-  
+  ROS_INFO_NAMED("sef_roboter_hw_interface", "Drive 5 initialization telegram sent!");
+
+
   // Drive 06
   msg_dim.label = "Drive_6_output";
   msg_dim.size = DRIVE_TELEGRAM_TRANSMIT_SIZE;
@@ -466,42 +176,308 @@ void SefRoboterHWInterface::initDrives(void)
 
   //Publish the message
   pub_drive_06_output_topic.publish(msg);
-  
-  
-  ROS_INFO_NAMED("sef_roboter_hw_interface", "Drive 1 initialization telegram sent!");
+  ROS_INFO_NAMED("sef_roboter_hw_interface", "Drive 6 initialization telegram sent!");
 }
+
+bool SefRoboterHWInterface::homingCallback(sef_roboter_ros_control::homing::Request &req,
+                                           sef_roboter_ros_control::homing::Response &res)
+{
+  //Homing
+  trajectory_msgs::JointTrajectory armCommand;
+  trajectory_msgs::JointTrajectoryPoint desiredConfiguration;
+
+  desiredConfiguration.positions.resize(NUM_OF_JOINTS);
+  armCommand.joint_names.resize(NUM_OF_JOINTS);
+
+  std::stringstream jointName;
+  for (int i = 0; i < NUM_OF_JOINTS; ++i) {
+    jointName.str("");
+    jointName << "joint_" << (i + 1);
+
+    desiredConfiguration.positions[i] = 0;          //Move each joint to zero position
+    armCommand.joint_names[i] = jointName.str();
+  }
+
+  armCommand.header.stamp = ros::Time::now();
+  armCommand.header.frame_id = "base_link";
+  armCommand.points.resize(1); // only one endpoint
+  armCommand.points[0] = desiredConfiguration;
+  armCommand.points[0].time_from_start = ros::Duration(20);
+
+  //Send command
+  pub_trajectory.publish(armCommand);
+
+  //Wait for movement execution
+  ros::Duration(20).sleep();
+
+  // Check actual joint position values
+  if((drive_01_actual_position_rad < 0.01) && (drive_01_actual_position_rad > -0.01) &&
+     (drive_02_actual_position_rad < 0.01) && (drive_02_actual_position_rad > -0.01) &&
+     (drive_03_actual_position_rad < 0.01) && (drive_03_actual_position_rad > -0.01) &&
+     (drive_04_actual_position_rad < 0.01) && (drive_04_actual_position_rad > -0.01) &&
+     (drive_05_actual_position_rad < 0.01) && (drive_05_actual_position_rad > -0.01) &&
+     (drive_06_actual_position_rad < 0.01) && (drive_06_actual_position_rad > -0.01))
+  {
+    res.completed = true;
+    return true;
+  }
+  else
+  {
+    res.completed = false;
+    return false;
+  }
+}
+
+void SefRoboterHWInterface::drive01Callback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data)
+{
+  
+  int received_byte_array[DRIVE_TELEGRAM_RECEIVE_SIZE];
+  int position_raw, velocity_raw;
+  double motor_position_rad, motor_velocity_rpm;
+    
+  for(int i = 0; i < DRIVE_TELEGRAM_RECEIVE_SIZE; i++)
+    received_byte_array[i] = callback_data->data[i];
+   	     
+  //Get actual position as 4 unsigned chars 
+  position_raw = (received_byte_array[10] << 24) +
+	         (received_byte_array[11] << 16) +
+	         (received_byte_array[12] << 8)  +
+	          received_byte_array[13];
+
+  //Get actual velocity as 4 unsigned chars
+  velocity_raw = (received_byte_array[2] << 24) + 
+	         (received_byte_array[3] << 16) +
+	         (received_byte_array[4] << 8)  +
+	          received_byte_array[5];
+	      
+  //Motor position in radians 
+  motor_position_rad = (double)position_raw / RESOLVER_RESOLUTION;
+	
+  //Joint Position in radians
+  drive_01_actual_position_rad = motor_position_rad * 2 * M_PI / DRIVE_01_RATIO;
+  
+  //Motor Velocity rpm
+  motor_velocity_rpm = (double)velocity_raw * (DRIVE_01_MAX_MOTOR_VELOCITY / 0x40000000);
+   
+  //Joint Velocity rad/s 
+  drive_01_actual_velocity_rad_s = motor_velocity_rpm * 2 * M_PI / 60 / DRIVE_01_RATIO; 
+  
+  ROS_DEBUG("Drive 01: Position: %10.6f, Velocity: %14.10f", drive_01_actual_position_rad,
+                                                             drive_01_actual_velocity_rad_s);
+  
+}
+
+void SefRoboterHWInterface::drive02Callback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data)
+{
+  int received_byte_array[DRIVE_TELEGRAM_RECEIVE_SIZE];
+  int position_raw, velocity_raw;
+  double motor_position_rad, motor_velocity_rpm;
+    
+  for(int i = 0; i < DRIVE_TELEGRAM_RECEIVE_SIZE; i++)
+    received_byte_array[i] = callback_data->data[i];
+   	     
+  //Get actual position as 4 unsigned chars 
+  position_raw = (received_byte_array[10] << 24) +
+	         (received_byte_array[11] << 16) +
+	         (received_byte_array[12] << 8)  +
+	          received_byte_array[13];
+
+  //Get actual velocity as 4 unsigned chars
+  velocity_raw = (received_byte_array[2] << 24) + 
+	         (received_byte_array[3] << 16) +
+	         (received_byte_array[4] << 8)  +
+	          received_byte_array[5];
+	      
+  //Motor position in radians 
+  motor_position_rad = (double)position_raw / RESOLVER_RESOLUTION;
+	
+  //Joint Position in radians
+  drive_02_actual_position_rad = motor_position_rad * 2 * M_PI / DRIVE_02_RATIO;
+  
+  //Motor Velocity rpm
+  motor_velocity_rpm = (double)velocity_raw * (DRIVE_02_MAX_MOTOR_VELOCITY / 0x40000000);
+   
+  //Joint Velocity rad/s 
+  drive_02_actual_velocity_rad_s = motor_velocity_rpm * 2 * M_PI / 60 / DRIVE_02_RATIO; 
+    
+  ROS_DEBUG("Drive 02: Position: %10.6f, Velocity: %14.10f", drive_02_actual_position_rad,
+                                                             drive_02_actual_velocity_rad_s);
+}
+
+void SefRoboterHWInterface::drive03Callback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data)
+{
+  int received_byte_array[DRIVE_TELEGRAM_RECEIVE_SIZE];
+  int position_raw, velocity_raw;
+  double motor_position_rad, motor_velocity_rpm;
+    
+  for(int i = 0; i < DRIVE_TELEGRAM_RECEIVE_SIZE; i++)
+    received_byte_array[i] = callback_data->data[i];
+   	     
+  //Get actual position as 4 unsigned chars 
+  position_raw = (received_byte_array[10] << 24) +
+	         (received_byte_array[11] << 16) +
+	         (received_byte_array[12] << 8)  +
+	          received_byte_array[13];
+
+  //Get actual velocity as 4 unsigned chars
+  velocity_raw = (received_byte_array[2] << 24) + 
+	         (received_byte_array[3] << 16) +
+	         (received_byte_array[4] << 8)  +
+	          received_byte_array[5];
+	      
+  //Motor position in radians 
+  motor_position_rad = (double)position_raw / RESOLVER_RESOLUTION;
+	
+  //Joint Position in radians
+  drive_03_actual_position_rad = motor_position_rad * 2 * M_PI / DRIVE_03_RATIO;
+  
+  //Motor Velocity rpm
+  motor_velocity_rpm = (double)velocity_raw * (DRIVE_03_MAX_MOTOR_VELOCITY / 0x40000000);
+   
+  //Joint Velocity rad/s 
+  drive_03_actual_velocity_rad_s = motor_velocity_rpm * 2 * M_PI / 60 / DRIVE_03_RATIO; 
+  
+  ROS_DEBUG("Drive 03: Position: %10.6f, Velocity: %14.10f", drive_03_actual_position_rad,
+                                                             drive_03_actual_velocity_rad_s);
+}
+
+void SefRoboterHWInterface::drive04Callback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data)
+{
+  int received_byte_array[DRIVE_TELEGRAM_RECEIVE_SIZE];
+  int position_raw, velocity_raw;
+  double motor_position_rad, motor_velocity_rpm;
+    
+  for(int i = 0; i < DRIVE_TELEGRAM_RECEIVE_SIZE; i++)
+    received_byte_array[i] = callback_data->data[i];
+   	     
+  //Get actual position as 4 unsigned chars 
+  position_raw = (received_byte_array[10] << 24) +
+	         (received_byte_array[11] << 16) +
+	         (received_byte_array[12] << 8)  +
+	          received_byte_array[13];
+
+  //Get actual velocity as 4 unsigned chars
+  velocity_raw = (received_byte_array[2] << 24) + 
+	         (received_byte_array[3] << 16) +
+	         (received_byte_array[4] << 8)  +
+	          received_byte_array[5];
+	      
+  //Motor position in radians 
+  motor_position_rad = (double)position_raw / RESOLVER_RESOLUTION;
+	
+  //Joint Position in radians
+  drive_04_actual_position_rad = motor_position_rad * 2 * M_PI / DRIVE_04_RATIO ;
+  
+  //Motor Velocity rpm
+  motor_velocity_rpm = (double)velocity_raw * (DRIVE_04_MAX_MOTOR_VELOCITY / 0x40000000);
+   
+  //Joint Velocity rad/s 
+  drive_04_actual_velocity_rad_s = motor_velocity_rpm * 2 * M_PI / 60 / DRIVE_04_RATIO; 
+      
+  ROS_DEBUG("Drive 04: Position: %10.6f, Velocity: %14.10f", drive_04_actual_position_rad,
+                                                             drive_04_actual_velocity_rad_s);
+}
+
+void SefRoboterHWInterface::drive05Callback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data)
+{
+  int received_byte_array[DRIVE_TELEGRAM_RECEIVE_SIZE];
+  int position_raw, velocity_raw;
+  double motor_position_rad, motor_velocity_rpm;
+    
+  for(int i = 0; i < DRIVE_TELEGRAM_RECEIVE_SIZE; i++)
+    received_byte_array[i] = callback_data->data[i];
+   	     
+  //Get actual position as 4 unsigned chars 
+  position_raw = (received_byte_array[10] << 24) +
+	         (received_byte_array[11] << 16) +
+	         (received_byte_array[12] << 8)  +
+	          received_byte_array[13];
+
+  //Get actual velocity as 4 unsigned chars
+  velocity_raw = (received_byte_array[2] << 24) + 
+	         (received_byte_array[3] << 16) +
+	         (received_byte_array[4] << 8)  +
+	          received_byte_array[5];
+	      
+  //Motor position in radians 
+  motor_position_rad = (double)position_raw / RESOLVER_RESOLUTION;
+	
+  //Joint Position in radians
+  drive_05_actual_position_rad = motor_position_rad * 2 * M_PI / DRIVE_05_RATIO;
+  
+  //Motor Velocity rpm
+  motor_velocity_rpm = (double)velocity_raw * (DRIVE_05_MAX_MOTOR_VELOCITY / 0x40000000);
+   
+  //Joint Velocity rad/s 
+  drive_05_actual_velocity_rad_s = motor_velocity_rpm * 2 * M_PI / 60 / DRIVE_05_RATIO; 
+    
+  ROS_DEBUG("Drive 05: Position: %10.6f, Velocity: %14.10f", drive_05_actual_position_rad,
+                                                             drive_05_actual_velocity_rad_s);
+}
+
+void SefRoboterHWInterface::drive06Callback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data)
+{
+  int received_byte_array[DRIVE_TELEGRAM_RECEIVE_SIZE];
+  int position_raw, velocity_raw;
+  double motor_position_rad, motor_velocity_rpm;
+    
+  for(int i = 0; i < DRIVE_TELEGRAM_RECEIVE_SIZE; i++)
+    received_byte_array[i] = callback_data->data[i];
+   	     
+  //Get actual position as 4 unsigned chars 
+  position_raw = (received_byte_array[10] << 24) +
+	         (received_byte_array[11] << 16) +
+	         (received_byte_array[12] << 8)  +
+	          received_byte_array[13];
+
+  //Get actual velocity as 4 unsigned chars
+  velocity_raw = (received_byte_array[2] << 24) + 
+	         (received_byte_array[3] << 16) +
+	         (received_byte_array[4] << 8)  +
+	          received_byte_array[5];
+	      
+  //Motor position in radians 
+  motor_position_rad = (double)position_raw / RESOLVER_RESOLUTION;
+	
+  //Joint Position in radians
+  drive_06_actual_position_rad = motor_position_rad * 2 * M_PI / DRIVE_06_RATIO;
+  
+  //Motor Velocity rpm
+  motor_velocity_rpm = (double)velocity_raw * (DRIVE_06_MAX_MOTOR_VELOCITY / 0x40000000);
+   
+  //Joint Velocity rad/s 
+  drive_06_actual_velocity_rad_s = motor_velocity_rpm * 2 * M_PI / 60 / DRIVE_06_RATIO; 
+   
+  ROS_DEBUG("Drive 06: Position: %10.6f, Velocity: %14.10f", drive_06_actual_position_rad,
+                                                             drive_06_actual_velocity_rad_s);
+}
+
 
 void SefRoboterHWInterface::read(ros::Duration &elapsed_time)
 {
   //Read current values of Drive 01
-  joint_position_[0] = drive_01_actual_position_rad;
+  joint_position_[0] = -drive_01_actual_position_rad;       //! Changing feedback direction here (CW -> CCW)
   joint_velocity_[0] = drive_01_actual_velocity_rad_s;
-  joint_effort_[0] = drive_01_actual_effort_Nm;
-  
+
   //Read current values of Drive 02
-  joint_position_[1] = drive_02_actual_position_rad;
+  joint_position_[1] = -drive_02_actual_position_rad;       //! Changing feedback direction here (CW -> CCW)
   joint_velocity_[1] = drive_02_actual_velocity_rad_s;
-  joint_effort_[1] = drive_02_actual_effort_Nm;
   
   //Read current values of Drive 03
   joint_position_[2] = drive_03_actual_position_rad;
   joint_velocity_[2] = drive_03_actual_velocity_rad_s;
-  joint_effort_[2] = drive_03_actual_effort_Nm;
   
   //Read current values of Drive 04
   joint_position_[3] = drive_04_actual_position_rad;
   joint_velocity_[3] = drive_04_actual_velocity_rad_s;
-  joint_effort_[3] = drive_04_actual_effort_Nm;
   
   //Read current values of Drive 05
-  joint_position_[4] = drive_05_actual_position_rad;
+  joint_position_[4] = -drive_05_actual_position_rad;       //! Changing feedback direction here (CW -> CCW)
   joint_velocity_[4] = drive_05_actual_velocity_rad_s;
-  joint_effort_[4] = drive_05_actual_effort_Nm;
   
   //Read current values of Drive 06
   joint_position_[5] = drive_06_actual_position_rad;
   joint_velocity_[5] = drive_06_actual_velocity_rad_s;
-  joint_effort_[5] = drive_06_actual_effort_Nm;  
   
 }
 
@@ -523,7 +499,7 @@ void SefRoboterHWInterface::write(ros::Duration &elapsed_time)
   msg.layout.dim.push_back(msg_dim);
   
   //Get joint_velocity_command from controller in radians 
-  double velocity_rad = joint_velocity_command_[0];
+  double velocity_rad = -joint_velocity_command_[0];        //! Changing command direction here (CW - CCW)
   
   //Convert to motor rpm (transmission included)
   double velocity_rpm = velocity_rad *DRIVE_01_RATIO * 60 / (2 * M_PI);
@@ -574,7 +550,7 @@ void SefRoboterHWInterface::write(ros::Duration &elapsed_time)
   msg.layout.dim.push_back(msg_dim);
   
   //Get joint_velocity_command from controller in radians 
-  velocity_rad = joint_velocity_command_[1];
+  velocity_rad = -joint_velocity_command_[1];               //! Changing command direction here (CW - CCW)
   
   //Convert to motor rpm (transmission included)
   velocity_rpm = velocity_rad *DRIVE_02_RATIO * 60 / (2 * M_PI);
@@ -718,7 +694,7 @@ void SefRoboterHWInterface::write(ros::Duration &elapsed_time)
   msg.layout.dim.push_back(msg_dim);
   
   //Get joint_velocity_command from controller in radians 
-  velocity_rad = joint_velocity_command_[4];
+  velocity_rad = -joint_velocity_command_[4];               //! Changing command direction here (CW - CCW)
   
   //Convert to motor rpm (transmission included)
   velocity_rpm = velocity_rad *DRIVE_05_RATIO * 60 / (2 * M_PI);
@@ -808,18 +784,7 @@ void SefRoboterHWInterface::write(ros::Duration &elapsed_time)
 
 void SefRoboterHWInterface::enforceLimits(ros::Duration &period)
 {
-  // ----------------------------------------------------
-  // ----------------------------------------------------
-  // ----------------------------------------------------
-  //
-  // CHOOSE THE TYPE OF JOINT LIMITS INTERFACE YOU WANT TO USE
-  // YOU SHOULD ONLY NEED TO USE ONE SATURATION INTERFACE,
-  // DEPENDING ON YOUR CONTROL METHOD
-  //
-  // EXAMPLES:
-  //
-  // Saturation Limits ---------------------------
-  //
+
   // Enforces position and velocity
   pos_jnt_sat_interface_.enforceLimits(period);
   //
@@ -829,15 +794,6 @@ void SefRoboterHWInterface::enforceLimits(ros::Duration &period)
   // Enforces position, velocity, and effort
   // eff_jnt_sat_interface_.enforceLimits(period);
 
-  // Soft limits ---------------------------------
-  //
-  // pos_jnt_soft_limits_.enforceLimits(period);
-  // vel_jnt_soft_limits_.enforceLimits(period);
-  // eff_jnt_soft_limits_.enforceLimits(period);
-  //
-  // ----------------------------------------------------
-  // ----------------------------------------------------
-  // ----------------------------------------------------
 }
 
 }  // namespace

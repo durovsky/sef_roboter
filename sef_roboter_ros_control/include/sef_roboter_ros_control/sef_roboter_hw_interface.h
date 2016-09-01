@@ -1,7 +1,7 @@
 /*********************************************************************
  * Software License Agreement (BSD License)
  *
- *  Copyright (c) 2015, University of Colorado, Boulder
+ *  Copyright (c) 2016, Technical University Kosice, Slovakia
  *  All rights reserved.
  *
  *  Redistribution and use in source and binary forms, with or without
@@ -32,9 +32,8 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************/
 
-/* Author: Dave Coleman
-   Desc:   Example ros_control hardware interface blank template for the RRBot
-           For a more detailed simulation example, see sim_hw_interface.h
+/* Author: Frantisek Durovsky
+   Desc:   ros_control hardware interface for the sef_roboter_sr25
 */
 
 #ifndef SEF_ROBOTER_HW_INTERFACE_H
@@ -42,9 +41,13 @@
 
 #include <ros_control_boilerplate/generic_hw_interface.h>
 
-//Header required for communication with siemens_cp1616 topics
+//Headers required for communication with siemens_cp1616 topics
 #include <std_msgs/UInt8MultiArray.h>
 #include <std_msgs/MultiArrayDimension.h>
+
+//Headers required for direct homing command
+#include <trajectory_msgs/JointTrajectory.h>
+#include <sef_roboter_ros_control/homing.h>
 
 namespace sef_roboter_hw_control
 {
@@ -59,26 +62,35 @@ public:
    */
   SefRoboterHWInterface(ros::NodeHandle& nh, urdf::Model* urdf_model = NULL);
 
+  /**
+   * \brief Destructor
+   */
+  ~SefRoboterHWInterface();
+
   /** \brief Send initialization telegrams to all drives. */
   void initDrives();
-  
+
+  /** \brief Homing Service Callback function. */
+  bool homingCallback(sef_roboter_ros_control::homing::Request &req,
+                      sef_roboter_ros_control::homing::Response &res);
+
   /** \brief Callback function to process drive 1 states */
-  void drive01TelegramCallback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data);
+  void drive01Callback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data);
   
   /** \brief Callback function to process drive 2 states */
-  void drive02TelegramCallback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data);
+  void drive02Callback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data);
   
   /** \brief Callback function to process drive 3 states */
-  void drive03TelegramCallback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data);
+  void drive03Callback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data);
   
   /** \brief Callback function to process drive 4 states */
-  void drive04TelegramCallback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data);
+  void drive04Callback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data);
   
   /** \brief Callback function to process drive 5 states */
-  void drive05TelegramCallback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data);
+  void drive05Callback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data);
   
   /** \brief Callback function to process drive 6 states */
-  void drive06TelegramCallback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data);
+  void drive06Callback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data);
   
   /** \brief Read the state from the robot hardware. */
   virtual void read(ros::Duration &elapsed_time);
@@ -96,68 +108,56 @@ private:
   ros::Publisher pub_drive_04_output_topic;
   ros::Publisher pub_drive_05_output_topic;
   ros::Publisher pub_drive_06_output_topic;
-    
+  ros::Publisher pub_trajectory;
+
+  const int NUM_OF_JOINTS = 6;
+
   const int DRIVE_TELEGRAM_TRANSMIT_SIZE = 12;
   const int DRIVE_TELEGRAM_RECEIVE_SIZE = 32;
   const int RESOLVER_RESOLUTION = 2048;
   
   //Drive 01 consts & variables
   const double DRIVE_01_MAX_MOTOR_VELOCITY = 3000;	      		
-  const double DRIVE_01_MAX_MOTOR_TORQUE = 50;
   const double DRIVE_01_RATIO = 80;
   
   double drive_01_actual_position_rad;
   double drive_01_actual_velocity_rad_s;
-  double drive_01_actual_effort_Nm;
-  
+
   //Drive 02 consts & variables
   const double DRIVE_02_MAX_MOTOR_VELOCITY = 3000;	      		
-  const double DRIVE_02_MAX_MOTOR_TORQUE = 50;
   const double DRIVE_02_RATIO = 120;
   
   double drive_02_actual_position_rad;
   double drive_02_actual_velocity_rad_s;
-  double drive_02_actual_effort_Nm;
   
   //Drive 03 consts & variables
   const double DRIVE_03_MAX_MOTOR_VELOCITY = 3000;	      		
-  const double DRIVE_03_MAX_MOTOR_TORQUE = 36;
   const double DRIVE_03_RATIO = 108;
   
   double drive_03_actual_position_rad;
   double drive_03_actual_velocity_rad_s;
-  double drive_03_actual_effort_Nm;
   
   //Drive 04 consts & variables
   const double DRIVE_04_MAX_MOTOR_VELOCITY = 6000;	      		
-  const double DRIVE_04_MAX_MOTOR_TORQUE = 5.02;
   const double DRIVE_04_RATIO = 76.5;
   
   double drive_04_actual_position_rad;
   double drive_04_actual_velocity_rad_s;
-  double drive_04_actual_effort_Nm;
   
   //Drive 05 consts & variables
   const double DRIVE_05_MAX_MOTOR_VELOCITY = 6000;	      		
-  const double DRIVE_05_MAX_MOTOR_TORQUE = 5.02;
   const double DRIVE_05_RATIO = 100.5;
   
   double drive_05_actual_position_rad;
   double drive_05_actual_velocity_rad_s;
-  double drive_05_actual_effort_Nm;
   
   //Drive 06 consts & variables
   const double DRIVE_06_MAX_MOTOR_VELOCITY = 6000;	      		
-  const double DRIVE_06_MAX_MOTOR_TORQUE = 5.02;
   const double DRIVE_06_RATIO = 92.2;
   
   double drive_06_actual_position_rad;
   double drive_06_actual_velocity_rad_s;
-  double drive_06_actual_effort_Nm;
-  
-  
-  
-  
+    
 };  // class
 
 }  // namespace

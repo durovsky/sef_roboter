@@ -1,7 +1,7 @@
 /*********************************************************************
  * Software License Agreement (BSD License)
  *
- *  Copyright (c) 2015, University of Colorado, Boulder
+ *  Copyright (c) 2016, Technical University Kosice, Slovakia
  *  All rights reserved.
  *
  *  Redistribution and use in source and binary forms, with or without
@@ -32,8 +32,8 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************/
 
-/* Author: Dave Coleman
-   Desc:   Example ros_control main() entry point for controlling robots in ROS
+/* Author: Frantisek Durovsky
+   Desc:   ros_control main() entry point for controlling sef_roboter in ROS
 */
 
 #include <ros_control_boilerplate/generic_hw_control_loop.h>
@@ -56,28 +56,31 @@ int main(int argc, char** argv)
 
   // Subscribe to drive_1_input_topic
   ros::Subscriber sub_drive_1_input_topic = nh.subscribe("/drive_1_input_topic", 1, 
-		  &sef_roboter_hw_control::SefRoboterHWInterface::drive01TelegramCallback, sef_roboter_hw_interface);
+          &sef_roboter_hw_control::SefRoboterHWInterface::drive01Callback, sef_roboter_hw_interface);
   
   // Subscribe to drive_2_input_topic
   ros::Subscriber sub_drive_2_input_topic = nh.subscribe("/drive_2_input_topic", 1, 
-		  &sef_roboter_hw_control::SefRoboterHWInterface::drive02TelegramCallback, sef_roboter_hw_interface);
+          &sef_roboter_hw_control::SefRoboterHWInterface::drive02Callback, sef_roboter_hw_interface);
   
   // Subscribe to drive_3_input_topic
   ros::Subscriber sub_drive_3_input_topic = nh.subscribe("/drive_3_input_topic", 1, 
-		  &sef_roboter_hw_control::SefRoboterHWInterface::drive03TelegramCallback, sef_roboter_hw_interface);
+          &sef_roboter_hw_control::SefRoboterHWInterface::drive03Callback, sef_roboter_hw_interface);
   
   // Subscribe to drive_4_input_topic
   ros::Subscriber sub_drive_4_input_topic = nh.subscribe("/drive_4_input_topic", 1, 
-		  &sef_roboter_hw_control::SefRoboterHWInterface::drive04TelegramCallback, sef_roboter_hw_interface);
+          &sef_roboter_hw_control::SefRoboterHWInterface::drive04Callback, sef_roboter_hw_interface);
   
   // Subscribe to drive_5_input_topic
   ros::Subscriber sub_drive_5_input_topic = nh.subscribe("/drive_5_input_topic", 1, 
-		  &sef_roboter_hw_control::SefRoboterHWInterface::drive05TelegramCallback, sef_roboter_hw_interface);
+          &sef_roboter_hw_control::SefRoboterHWInterface::drive05Callback, sef_roboter_hw_interface);
   
   // Subscribe to drive_6_input_topic
   ros::Subscriber sub_drive_6_input_topic = nh.subscribe("/drive_6_input_topic", 1, 
-		  &sef_roboter_hw_control::SefRoboterHWInterface::drive06TelegramCallback, sef_roboter_hw_interface);
+          &sef_roboter_hw_control::SefRoboterHWInterface::drive06Callback, sef_roboter_hw_interface);
   
+  // Create Homing service
+  ros::ServiceServer homing_service = nh.advertiseService("/homing",
+          &sef_roboter_hw_control::SefRoboterHWInterface::homingCallback, sef_roboter_hw_interface);
   
   //Wait until communication starts properly
   ros::Duration(5).sleep();
