@@ -6,13 +6,32 @@ set(CMAKE_CXX_FLAGS "-std=c++11 -Wall ${CMAKE_CXX_FLAGS}")
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  std_msgs
+  message_generation
   ros_control_boilerplate)
 
 include_directories(${CATKIN_INCLUDE_DIRS})
 include_directories(${PROJECT_SOURCE_DIR}/include/)
 include_directories(${ros_control_boilerplate_INCLUDE_DIRS})
 
-catkin_package()
+add_service_files(
+  FILES
+  homing.srv
+)
+
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+)
+
+catkin_package(
+  CATKIN_DEPENDS
+    message_runtime
+    roscpp
+    std_msgs
+  INCLUDE_DIRS
+    include
+)
 
 # SefRoboter Hardware Interface
 add_library(sef_roboter_hw_interface
