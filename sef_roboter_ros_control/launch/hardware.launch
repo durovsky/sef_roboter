@@ -18,7 +18,7 @@
   <group ns="sef_roboter">
 
     <!-- Load hardware interface -->
-    <node name="sef_roboter_hardware_interface" pkg="ros_control_boilerplate" type="sef_roboter_hw_main"
+    <node name="sef_roboter_hardware_interface" pkg="sef_roboter_ros_control" type="sef_roboter_hw_main"
           output="screen" launch-prefix="$(arg launch_prefix)"/>
 
     <!-- Load controller settings -->
