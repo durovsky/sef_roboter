@@ -1,22 +1,69 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+MainWindow::MainWindow(ros::NodeHandle *nh) :
+    QMainWindow(0),
+    ui(new Ui::MainWindow),
+    timer_id(0)
 {
     ui->setupUi(this);
+
+    // Subscribe to joint_states
+    sub_joint_states = nh->subscribe("/sef_roboter/joint_states", 1, &MainWindow::jointStateCallback, this);
+
+    // Initialize publisher for jointTrajectory
+    pub_joint_trajectory = nh->advertise<trajectory_msgs::JointTrajectory > ("/sef_roboter/velocity_trajectory_controller/command", 1);
+
+    // Start timer
+    timer_id = startTimer(10);
 
 }
 
 MainWindow::~MainWindow()
 {
+
+    if(timer_id)
+        killTimer(timer_id);
+
     delete ui;
+}
+
+void MainWindow::timerEvent(QTimerEvent *timer_event)
+{
+    ros::spinOnce();
+}
+
+void MainWindow::jointStateCallback(const sensor_msgs::JointStateConstPtr &msg)
+{
+    ROS_INFO("JointStateCallback");
+    joint_1_actual_value = msg->position[0];
+    QString joint_1_actual_value_str = QString::number(joint_1_actual_value, 'f', 4);
+    ui->label_actual_value_joint_1->setText(joint_1_actual_value_str);
+
+    joint_2_actual_value = msg->position[1];
+    QString joint_2_actual_value_str = QString::number(joint_2_actual_value, 'f', 4);
+    ui->label_actual_value_joint_2->setText(joint_2_actual_value_str);
+
+    joint_3_actual_value = msg->position[2];
+    QString joint_3_actual_value_str = QString::number(joint_3_actual_value, 'f', 4);
+    ui->label_actual_value_joint_3->setText(joint_3_actual_value_str);
+
+    joint_4_actual_value = msg->position[3];
+    QString joint_4_actual_value_str = QString::number(joint_4_actual_value, 'f', 4);
+    ui->label_actual_value_joint_4->setText(joint_4_actual_value_str);
+
+    joint_5_actual_value = msg->position[4];
+    QString joint_5_actual_value_str = QString::number(joint_5_actual_value, 'f', 4);
+    ui->label_actual_value_joint_5->setText(joint_5_actual_value_str);
+
+    joint_6_actual_value = msg->position[5];
+    QString joint_6_actual_value_str = QString::number(joint_6_actual_value, 'f', 4);
+    ui->label_actual_value_joint_6->setText(joint_6_actual_value_str);
 }
 
 void MainWindow::on_button_move_to_home_clicked()
 {
-
+    
 }
 
 void MainWindow::on_button_move_to_goal_slider_clicked()
