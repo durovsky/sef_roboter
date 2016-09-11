@@ -20,8 +20,8 @@ public:
 
 private slots:
     void on_button_move_to_home_clicked();
-    void on_button_move_to_goal_slider_clicked();
-    void on_button_move_to_goal_spinbox_clicked();
+    void on_button_move_to_slider_goal_clicked();
+    void on_button_move_to_spinbox_goal_clicked();
     void on_slider_joint_1_valueChanged(int value);
     void on_slider_joint_2_valueChanged(int value);
     void on_slider_joint_3_valueChanged(int value);
@@ -35,6 +35,8 @@ private slots:
     void on_spinbox_joint_5_valueChanged(double arg1);
     void on_spinbox_joint_6_valueChanged(double arg1);
 
+
+
 private:
     void jointStateCallback(const sensor_msgs::JointStateConstPtr &msg);
 
@@ -46,26 +48,26 @@ private:
 
     int timer_id;
 
-    double joint_1_actual_value;
-    double joint_2_actual_value;
-    double joint_3_actual_value;
-    double joint_4_actual_value;
-    double joint_5_actual_value;
-    double joint_6_actual_value;
-
+    std::vector<double> slider_goals;
     double joint_1_slider_goal;
     double joint_2_slider_goal;
     double joint_3_slider_goal;
     double joint_4_slider_goal;
     double joint_5_slider_goal;
     double joint_6_slider_goal;
+    int slider_goal_time;
 
+    std::vector<double> spinbox_goals;
     double joint_1_spinbox_goal;
     double joint_2_spinbox_goal;
     double joint_3_spinbox_goal;
     double joint_4_spinbox_goal;
     double joint_5_spinbox_goal;
     double joint_6_spinbox_goal;
+    int spinbox_goal_time;
+
+    static const int NUM_OF_JOINTS = 6;
+    static const int HOMING_TIME = 10;
 
 protected:
     void timerEvent(QTimerEvent *timer_event);

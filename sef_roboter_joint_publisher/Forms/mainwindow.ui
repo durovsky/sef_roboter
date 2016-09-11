@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>598</width>
-    <height>523</height>
+    <height>563</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,10 +24,19 @@
      </rect>
     </property>
     <property name="minimum">
-     <number>-15</number>
+     <number>-150</number>
     </property>
     <property name="maximum">
-     <number>15</number>
+     <number>150</number>
+    </property>
+    <property name="singleStep">
+     <number>1</number>
+    </property>
+    <property name="pageStep">
+     <number>10</number>
+    </property>
+    <property name="value">
+     <number>0</number>
     </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
@@ -74,7 +83,7 @@
    <widget class="QDoubleSpinBox" name="spinbox_joint_1">
     <property name="geometry">
      <rect>
-      <x>420</x>
+      <x>430</x>
       <y>80</y>
       <width>121</width>
       <height>27</height>
@@ -97,14 +106,17 @@
    <widget class="QLabel" name="label_goal_value_1">
     <property name="geometry">
      <rect>
-      <x>250</x>
+      <x>240</x>
       <y>50</y>
       <width>121</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>Goal Value</string>
+     <string>Goal 1 Value</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="label_main">
@@ -130,14 +142,17 @@
    <widget class="QLabel" name="label_goal_value_2">
     <property name="geometry">
      <rect>
-      <x>440</x>
+      <x>430</x>
       <y>50</y>
-      <width>91</width>
+      <width>111</width>
       <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>Goal Value</string>
+     <string>Goal 2 Value</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="label_actual_value_joint_2">
@@ -181,7 +196,7 @@
    <widget class="QDoubleSpinBox" name="spinbox_joint_2">
     <property name="geometry">
      <rect>
-      <x>420</x>
+      <x>430</x>
       <y>130</y>
       <width>121</width>
       <height>27</height>
@@ -198,10 +213,10 @@
      </rect>
     </property>
     <property name="minimum">
-     <number>-5</number>
+     <number>-50</number>
     </property>
     <property name="maximum">
-     <number>15</number>
+     <number>150</number>
     </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
@@ -248,7 +263,7 @@
    <widget class="QDoubleSpinBox" name="spinbox_joint_3">
     <property name="geometry">
      <rect>
-      <x>420</x>
+      <x>430</x>
       <y>180</y>
       <width>121</width>
       <height>27</height>
@@ -265,10 +280,10 @@
      </rect>
     </property>
     <property name="minimum">
-     <number>-5</number>
+     <number>-50</number>
     </property>
     <property name="maximum">
-     <number>15</number>
+     <number>150</number>
     </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
@@ -315,7 +330,7 @@
    <widget class="QDoubleSpinBox" name="spinbox_joint_4">
     <property name="geometry">
      <rect>
-      <x>420</x>
+      <x>430</x>
       <y>230</y>
       <width>121</width>
       <height>27</height>
@@ -332,10 +347,10 @@
      </rect>
     </property>
     <property name="minimum">
-     <number>-25</number>
+     <number>-250</number>
     </property>
     <property name="maximum">
-     <number>25</number>
+     <number>250</number>
     </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
@@ -382,7 +397,7 @@
    <widget class="QDoubleSpinBox" name="spinbox_joint_5">
     <property name="geometry">
      <rect>
-      <x>420</x>
+      <x>430</x>
       <y>280</y>
       <width>121</width>
       <height>27</height>
@@ -399,10 +414,10 @@
      </rect>
     </property>
     <property name="minimum">
-     <number>-30</number>
+     <number>-300</number>
     </property>
     <property name="maximum">
-     <number>30</number>
+     <number>300</number>
     </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
@@ -449,7 +464,7 @@
    <widget class="QDoubleSpinBox" name="spinbox_joint_6">
     <property name="geometry">
      <rect>
-      <x>420</x>
+      <x>430</x>
       <y>330</y>
       <width>121</width>
       <height>27</height>
@@ -466,10 +481,10 @@
      </rect>
     </property>
     <property name="minimum">
-     <number>-25</number>
+     <number>-250</number>
     </property>
     <property name="maximum">
-     <number>25</number>
+     <number>250</number>
     </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
@@ -478,8 +493,8 @@
    <widget class="QLabel" name="label_min_limit_joint_1">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>110</y>
+      <x>180</x>
+      <y>90</y>
       <width>31</width>
       <height>16</height>
      </rect>
@@ -504,8 +519,8 @@
    <widget class="QLabel" name="label_max_limit_joint_1">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>110</y>
+      <x>370</x>
+      <y>90</y>
       <width>31</width>
       <height>16</height>
      </rect>
@@ -530,8 +545,8 @@
    <widget class="QLabel" name="label_min_limit_joint_2">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>160</y>
+      <x>180</x>
+      <y>140</y>
       <width>31</width>
       <height>16</height>
      </rect>
@@ -556,8 +571,8 @@
    <widget class="QLabel" name="label_max_limit_joint_2">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>160</y>
+      <x>370</x>
+      <y>140</y>
       <width>31</width>
       <height>16</height>
      </rect>
@@ -582,8 +597,8 @@
    <widget class="QLabel" name="label_max_limit_joint_3">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>210</y>
+      <x>370</x>
+      <y>190</y>
       <width>31</width>
       <height>16</height>
      </rect>
@@ -608,8 +623,8 @@
    <widget class="QLabel" name="label_max_limit_joint_4">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>260</y>
+      <x>370</x>
+      <y>240</y>
       <width>31</width>
       <height>16</height>
      </rect>
@@ -634,8 +649,8 @@
    <widget class="QLabel" name="label_max_limit_joint_5">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>310</y>
+      <x>370</x>
+      <y>290</y>
       <width>31</width>
       <height>16</height>
      </rect>
@@ -660,8 +675,8 @@
    <widget class="QLabel" name="label_max_limit_joint_6">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>360</y>
+      <x>370</x>
+      <y>340</y>
       <width>31</width>
       <height>16</height>
      </rect>
@@ -686,8 +701,8 @@
    <widget class="QLabel" name="label_min_limit_joint_3">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>210</y>
+      <x>180</x>
+      <y>190</y>
       <width>31</width>
       <height>16</height>
      </rect>
@@ -712,8 +727,8 @@
    <widget class="QLabel" name="label_min_limit_joint_4">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>260</y>
+      <x>180</x>
+      <y>240</y>
       <width>31</width>
       <height>16</height>
      </rect>
@@ -738,8 +753,8 @@
    <widget class="QLabel" name="label_min_limit_joint_5">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>310</y>
+      <x>180</x>
+      <y>290</y>
       <width>31</width>
       <height>16</height>
      </rect>
@@ -764,8 +779,8 @@
    <widget class="QLabel" name="label_min_limit_joint_6">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>360</y>
+      <x>180</x>
+      <y>340</y>
       <width>31</width>
       <height>16</height>
      </rect>
@@ -787,31 +802,252 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QPushButton" name="button_move_to_goal">
+   <widget class="QPushButton" name="button_move_to_slider_goal">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>400</y>
-      <width>191</width>
+      <x>200</x>
+      <y>440</y>
+      <width>171</width>
       <height>61</height>
      </rect>
     </property>
     <property name="text">
-     <string>Move to Goal</string>
+     <string>Move to Goal 1</string>
     </property>
    </widget>
    <widget class="QPushButton" name="button_move_to_home">
     <property name="geometry">
      <rect>
-      <x>340</x>
-      <y>400</y>
-      <width>191</width>
+      <x>20</x>
+      <y>440</y>
+      <width>151</width>
       <height>61</height>
      </rect>
     </property>
     <property name="text">
      <string>Move to Home</string>
     </property>
+   </widget>
+   <widget class="QPushButton" name="button_move_to_spinbox_goal">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>440</y>
+      <width>171</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Move to Goal 2</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>390</y>
+      <width>146</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Duration</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinbox_spinbox_duration">
+       <property name="suffix">
+        <string extracomment="s"/>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QLabel" name="label_slider_value_joint_1">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>110</y>
+      <width>67</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="text">
+     <string>0.0</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_slider_value_joint_2">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>160</y>
+      <width>67</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="text">
+     <string>0.0</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_slider_value_joint_3">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>210</y>
+      <width>67</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="text">
+     <string>0.0</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_slider_value_joint_4">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>260</y>
+      <width>67</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="text">
+     <string>0.0</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_slider_value_joint_5">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>310</y>
+      <width>67</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="text">
+     <string>0.0</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_slider_value_joint_6">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>360</y>
+      <width>67</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::LeftToRight</enum>
+    </property>
+    <property name="text">
+     <string>0.0</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>390</y>
+      <width>146</width>
+      <height>29</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Duration</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinbox_slider_duration">
+       <property name="suffix">
+        <string extracomment="s"/>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

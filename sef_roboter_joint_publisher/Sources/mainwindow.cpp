@@ -8,11 +8,14 @@ MainWindow::MainWindow(ros::NodeHandle *nh) :
 {
     ui->setupUi(this);
 
+    slider_goals.resize(NUM_OF_JOINTS);
+    spinbox_goals.resize(NUM_OF_JOINTS);
+
     // Subscribe to joint_states
     sub_joint_states = nh->subscribe("/sef_roboter/joint_states", 1, &MainWindow::jointStateCallback, this);
 
     // Initialize publisher for jointTrajectory
-    pub_joint_trajectory = nh->advertise<trajectory_msgs::JointTrajectory > ("/sef_roboter/velocity_trajectory_controller/command", 1);
+    pub_joint_trajectory = nh->advertise<trajectory_msgs::JointTrajectory > ("/sef_roboter/joints_controller/command", 1);
 
     // Start timer
     timer_id = startTimer(10);
@@ -35,103 +38,188 @@ void MainWindow::timerEvent(QTimerEvent *timer_event)
 
 void MainWindow::jointStateCallback(const sensor_msgs::JointStateConstPtr &msg)
 {
-    ROS_INFO("JointStateCallback");
-    joint_1_actual_value = msg->position[0];
-    QString joint_1_actual_value_str = QString::number(joint_1_actual_value, 'f', 4);
-    ui->label_actual_value_joint_1->setText(joint_1_actual_value_str);
+    QString value_str;
 
-    joint_2_actual_value = msg->position[1];
-    QString joint_2_actual_value_str = QString::number(joint_2_actual_value, 'f', 4);
-    ui->label_actual_value_joint_2->setText(joint_2_actual_value_str);
+    value_str = QString::number(msg->position[0], 'f', 4);
+    ui->label_actual_value_joint_1->setText(value_str);
 
-    joint_3_actual_value = msg->position[2];
-    QString joint_3_actual_value_str = QString::number(joint_3_actual_value, 'f', 4);
-    ui->label_actual_value_joint_3->setText(joint_3_actual_value_str);
+    value_str = QString::number(msg->position[1], 'f', 4);
+    ui->label_actual_value_joint_2->setText(value_str);
 
-    joint_4_actual_value = msg->position[3];
-    QString joint_4_actual_value_str = QString::number(joint_4_actual_value, 'f', 4);
-    ui->label_actual_value_joint_4->setText(joint_4_actual_value_str);
+    value_str = QString::number(msg->position[2], 'f', 4);
+    ui->label_actual_value_joint_3->setText(value_str);
 
-    joint_5_actual_value = msg->position[4];
-    QString joint_5_actual_value_str = QString::number(joint_5_actual_value, 'f', 4);
-    ui->label_actual_value_joint_5->setText(joint_5_actual_value_str);
+    value_str = QString::number(msg->position[3], 'f', 4);
+    ui->label_actual_value_joint_4->setText(value_str);
 
-    joint_6_actual_value = msg->position[5];
-    QString joint_6_actual_value_str = QString::number(joint_6_actual_value, 'f', 4);
-    ui->label_actual_value_joint_6->setText(joint_6_actual_value_str);
+    value_str = QString::number(msg->position[4], 'f', 4);
+    ui->label_actual_value_joint_5->setText(value_str);
+
+    value_str = QString::number(msg->position[5], 'f', 4);
+    ui->label_actual_value_joint_6->setText(value_str);
 }
 
 void MainWindow::on_button_move_to_home_clicked()
 {
-    
+    ROS_INFO("Moving to Home Position");
+
+    trajectory_msgs::JointTrajectory arm_command;
+    trajectory_msgs::JointTrajectoryPoint desired_configuration;
+
+    // Resize to 6 joints
+    desired_configuration.positions.resize(NUM_OF_JOINTS);
+    arm_command.joint_names.resize(NUM_OF_JOINTS);
+
+    std::stringstream joint_name;
+    for(int i = 0; i < NUM_OF_JOINTS; ++i)
+    {
+        joint_name.str("");
+        joint_name << "joint_" <<  (i + 1);
+        desired_configuration.positions[i] = 0.5;
+        arm_command.joint_names[i] = joint_name.str();
+    }
+
+    arm_command.header.stamp = ros::Time::now();
+    arm_command.header.frame_id = "base_link";
+    arm_command.points.resize(1);
+    arm_command.points[0] = desired_configuration;
+    arm_command.points[0].time_from_start = ros::Duration(HOMING_TIME);
+
+    // Publish homing trajectory
+    pub_joint_trajectory.publish(arm_command);
 }
 
-void MainWindow::on_button_move_to_goal_slider_clicked()
+void MainWindow::on_button_move_to_slider_goal_clicked()
 {
+    ROS_INFO("Moving to Goal 1: [%f, %f, %f, %f, %f, %f]", slider_goals[0], slider_goals[1], slider_goals[2],
+                                                           slider_goals[3], slider_goals[4], slider_goals[5]);
+    trajectory_msgs::JointTrajectory arm_command;
+    trajectory_msgs::JointTrajectoryPoint desired_configuration;
 
+    // Resize to 6 joints
+    desired_configuration.positions.resize(NUM_OF_JOINTS);
+    arm_command.joint_names.resize(NUM_OF_JOINTS);
+
+
+    std::stringstream joint_name;
+    for(int i = 0; i < NUM_OF_JOINTS; ++i)
+    {
+        joint_name.str("");
+        joint_name << "joint_" <<  (i + 1);
+        desired_configuration.positions[i] = slider_goals[i];
+        arm_command.joint_names[i] = joint_name.str();
+    }
+
+    arm_command.header.stamp = ros::Time::now();
+    arm_command.header.frame_id = "base_link";
+    arm_command.points.resize(1);
+    arm_command.points[0] = desired_configuration;
+    arm_command.points[0].time_from_start = ros::Duration(HOMING_TIME);
+
+    // Publish homing trajectory
+    pub_joint_trajectory.publish(arm_command);
 }
 
-void MainWindow::on_button_move_to_goal_spinbox_clicked()
+void MainWindow::on_button_move_to_spinbox_goal_clicked()
 {
+    ROS_INFO("Moving to Goal 2: [%f, %f, %f, %f, %f, %f]", spinbox_goals[0], spinbox_goals[1], spinbox_goals[2],
+                                                           spinbox_goals[3], spinbox_goals[4], spinbox_goals[5]);
+    trajectory_msgs::JointTrajectory arm_command;
+    trajectory_msgs::JointTrajectoryPoint desired_configuration;
 
+    // Resize to 6 joints
+    desired_configuration.positions.resize(NUM_OF_JOINTS);
+    arm_command.joint_names.resize(NUM_OF_JOINTS);
+
+
+    std::stringstream joint_name;
+    for(int i = 0; i < NUM_OF_JOINTS; ++i)
+    {
+        joint_name.str("");
+        joint_name << "joint_" <<  (i + 1);
+        desired_configuration.positions[i] = spinbox_goals[i];
+        arm_command.joint_names[i] = joint_name.str();
+    }
+
+    arm_command.header.stamp = ros::Time::now();
+    arm_command.header.frame_id = "base_link";
+    arm_command.points.resize(1);
+    arm_command.points[0] = desired_configuration;
+    arm_command.points[0].time_from_start = ros::Duration(HOMING_TIME);
+
+    // Publish homing trajectory
+    pub_joint_trajectory.publish(arm_command);
 }
 
 void MainWindow::on_slider_joint_1_valueChanged(int value)
 {
-    joint_1_slider_goal = double(value)/10;
+    slider_goals[0] = double(value)/100;
+    QString value_str = QString::number(slider_goals[0], 'f', 3);
+    ui->label_slider_value_joint_1->setText(value_str);
+
 }
 
 void MainWindow::on_slider_joint_2_valueChanged(int value)
 {
-    joint_2_slider_goal = double(value)/10;
+    slider_goals[1] = double(value)/100;
+    QString value_str = QString::number(slider_goals[1], 'f', 3);
+    ui->label_slider_value_joint_2->setText(value_str);
 }
 
 void MainWindow::on_slider_joint_3_valueChanged(int value)
 {
-    joint_3_slider_goal = double(value)/10;
+    slider_goals[2] = double(value)/100;
+    QString value_str = QString::number(slider_goals[2], 'f', 3);
+    ui->label_slider_value_joint_3->setText(value_str);
 }
 
 void MainWindow::on_slider_joint_4_valueChanged(int value)
 {
-    joint_4_slider_goal = double(value)/10;
+    slider_goals[3] = double(value)/100;
+    QString value_str = QString::number(slider_goals[3], 'f', 3);
+    ui->label_slider_value_joint_4->setText(value_str);
 }
 
 void MainWindow::on_slider_joint_5_valueChanged(int value)
 {
-    joint_5_slider_goal = double(value)/10;
+    slider_goals[4] = double(value)/100;
+    QString value_str = QString::number(slider_goals[4], 'f', 3);
+    ui->label_slider_value_joint_5->setText(value_str);
 }
 
 void MainWindow::on_slider_joint_6_valueChanged(int value)
 {
-    joint_6_slider_goal = double(value)/10;
+    slider_goals[5] = double(value)/100;
+    QString value_str = QString::number(slider_goals[5], 'f', 3);
+    ui->label_slider_value_joint_6->setText(value_str);
 }
 
 void MainWindow::on_spinbox_joint_1_valueChanged(double arg1)
 {
-    joint_1_spinbox_goal = arg1;
+    spinbox_goals[0] = arg1;
 }
 
 void MainWindow::on_spinbox_joint_2_valueChanged(double arg1)
 {
-    joint_2_spinbox_goal = arg1;
+    spinbox_goals[1] = arg1;
 }
 
 void MainWindow::on_spinbox_joint_3_valueChanged(double arg1)
 {
-    joint_3_spinbox_goal = arg1;
+    spinbox_goals[2] = arg1;
 }
 
 void MainWindow::on_spinbox_joint_4_valueChanged(double arg1)
 {
-    joint_4_spinbox_goal = arg1;
+    spinbox_goals[3] = arg1;
 }
 
 void MainWindow::on_spinbox_joint_5_valueChanged(double arg1)
 {
-    joint_5_spinbox_goal = arg1;
+    spinbox_goals[4] = arg1;
 }
 
 void MainWindow::on_spinbox_joint_6_valueChanged(double arg1)
 {
-    joint_6_spinbox_goal = arg1;
+    spinbox_goals[5] = arg1;
 }
