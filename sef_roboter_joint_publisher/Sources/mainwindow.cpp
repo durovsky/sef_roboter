@@ -4,7 +4,9 @@
 MainWindow::MainWindow(ros::NodeHandle *nh) :
     QMainWindow(0),
     ui(new Ui::MainWindow),
-    timer_id(0)
+    timer_id(0),
+    slider_trajectory_duration(5),
+    spinbox_trajectory_duration(5)
 {
     ui->setupUi(this);
 
@@ -114,7 +116,7 @@ void MainWindow::on_button_move_to_slider_goal_clicked()
     arm_command.header.frame_id = "base_link";
     arm_command.points.resize(1);
     arm_command.points[0] = desired_configuration;
-    arm_command.points[0].time_from_start = ros::Duration(HOMING_TIME);
+    arm_command.points[0].time_from_start = ros::Duration(slider_trajectory_duration);
 
     // Publish homing trajectory
     pub_joint_trajectory.publish(arm_command);
@@ -145,7 +147,7 @@ void MainWindow::on_button_move_to_spinbox_goal_clicked()
     arm_command.header.frame_id = "base_link";
     arm_command.points.resize(1);
     arm_command.points[0] = desired_configuration;
-    arm_command.points[0].time_from_start = ros::Duration(HOMING_TIME);
+    arm_command.points[0].time_from_start = ros::Duration(spinbox_trajectory_duration);
 
     // Publish homing trajectory
     pub_joint_trajectory.publish(arm_command);
@@ -222,4 +224,14 @@ void MainWindow::on_spinbox_joint_5_valueChanged(double arg1)
 void MainWindow::on_spinbox_joint_6_valueChanged(double arg1)
 {
     spinbox_goals[5] = arg1;
+}
+
+void MainWindow::on_spinbox_slider_duration_valueChanged(int arg1)
+{
+    slider_trajectory_duration = arg1;
+}
+
+void MainWindow::on_spinbox_spinbox_duration_valueChanged(int arg1)
+{
+    spinbox_trajectory_duration = arg1;
 }

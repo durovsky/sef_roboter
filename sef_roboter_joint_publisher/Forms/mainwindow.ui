@@ -24,10 +24,10 @@
      </rect>
     </property>
     <property name="minimum">
-     <number>-150</number>
+     <number>-200</number>
     </property>
     <property name="maximum">
-     <number>150</number>
+     <number>200</number>
     </property>
     <property name="singleStep">
      <number>1</number>
@@ -89,6 +89,9 @@
       <height>27</height>
      </rect>
     </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
    </widget>
    <widget class="QLabel" name="label_actual_value">
     <property name="geometry">
@@ -100,7 +103,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Actual value</string>
+     <string>Actual Values</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_goal_value_1">
@@ -113,7 +116,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Goal 1 Value</string>
+     <string>Goal 1 Values</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -149,7 +152,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Goal 2 Value</string>
+     <string>Goal 2 Values</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -201,6 +204,9 @@
       <width>121</width>
       <height>27</height>
      </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QSlider" name="slider_joint_2">
@@ -269,6 +275,9 @@
       <height>27</height>
      </rect>
     </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
    </widget>
    <widget class="QSlider" name="slider_joint_3">
     <property name="geometry">
@@ -280,10 +289,10 @@
      </rect>
     </property>
     <property name="minimum">
-     <number>-50</number>
+     <number>-150</number>
     </property>
     <property name="maximum">
-     <number>150</number>
+     <number>50</number>
     </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
@@ -335,6 +344,9 @@
       <width>121</width>
       <height>27</height>
      </rect>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QSlider" name="slider_joint_4">
@@ -403,6 +415,9 @@
       <height>27</height>
      </rect>
     </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
    </widget>
    <widget class="QSlider" name="slider_joint_5">
     <property name="geometry">
@@ -414,10 +429,10 @@
      </rect>
     </property>
     <property name="minimum">
-     <number>-300</number>
+     <number>-160</number>
     </property>
     <property name="maximum">
-     <number>300</number>
+     <number>160</number>
     </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
@@ -470,6 +485,9 @@
       <height>27</height>
      </rect>
     </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
    </widget>
    <widget class="QSlider" name="slider_joint_6">
     <property name="geometry">
@@ -507,7 +525,7 @@
      </font>
     </property>
     <property name="text">
-     <string>-1.5</string>
+     <string>-2</string>
     </property>
     <property name="textFormat">
      <enum>Qt::AutoText</enum>
@@ -533,7 +551,7 @@
      </font>
     </property>
     <property name="text">
-     <string>1.5</string>
+     <string>2</string>
     </property>
     <property name="textFormat">
      <enum>Qt::AutoText</enum>
@@ -611,7 +629,7 @@
      </font>
     </property>
     <property name="text">
-     <string>1.5</string>
+     <string>0.5</string>
     </property>
     <property name="textFormat">
      <enum>Qt::AutoText</enum>
@@ -663,7 +681,7 @@
      </font>
     </property>
     <property name="text">
-     <string>3</string>
+     <string>1.6</string>
     </property>
     <property name="textFormat">
      <enum>Qt::AutoText</enum>
@@ -715,7 +733,7 @@
      </font>
     </property>
     <property name="text">
-     <string>-0.5</string>
+     <string>-1.5</string>
     </property>
     <property name="textFormat">
      <enum>Qt::AutoText</enum>
@@ -767,7 +785,7 @@
      </font>
     </property>
     <property name="text">
-     <string>-3</string>
+     <string>-1.6</string>
     </property>
     <property name="textFormat">
      <enum>Qt::AutoText</enum>
@@ -854,14 +872,26 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Duration</string>
+        <string>Duration [s]:</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QSpinBox" name="spinbox_spinbox_duration">
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
        <property name="suffix">
         <string extracomment="s"/>
+       </property>
+       <property name="minimum">
+        <number>2</number>
+       </property>
+       <property name="maximum">
+        <number>30</number>
+       </property>
+       <property name="value">
+        <number>5</number>
        </property>
       </widget>
      </item>
@@ -1023,7 +1053,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>210</x>
@@ -1036,14 +1066,29 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Duration</string>
+        <string>Duration [s]:</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QSpinBox" name="spinbox_slider_duration">
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
        <property name="suffix">
         <string extracomment="s"/>
+       </property>
+       <property name="minimum">
+        <number>2</number>
+       </property>
+       <property name="maximum">
+        <number>30</number>
+       </property>
+       <property name="singleStep">
+        <number>1</number>
+       </property>
+       <property name="value">
+        <number>5</number>
        </property>
       </widget>
      </item>

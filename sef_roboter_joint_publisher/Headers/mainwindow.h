@@ -34,8 +34,8 @@ private slots:
     void on_spinbox_joint_4_valueChanged(double arg1);
     void on_spinbox_joint_5_valueChanged(double arg1);
     void on_spinbox_joint_6_valueChanged(double arg1);
-
-
+    void on_spinbox_slider_duration_valueChanged(int arg1);
+    void on_spinbox_spinbox_duration_valueChanged(int arg1);
 
 private:
     void jointStateCallback(const sensor_msgs::JointStateConstPtr &msg);
@@ -49,22 +49,10 @@ private:
     int timer_id;
 
     std::vector<double> slider_goals;
-    double joint_1_slider_goal;
-    double joint_2_slider_goal;
-    double joint_3_slider_goal;
-    double joint_4_slider_goal;
-    double joint_5_slider_goal;
-    double joint_6_slider_goal;
-    int slider_goal_time;
+    int slider_trajectory_duration;
 
     std::vector<double> spinbox_goals;
-    double joint_1_spinbox_goal;
-    double joint_2_spinbox_goal;
-    double joint_3_spinbox_goal;
-    double joint_4_spinbox_goal;
-    double joint_5_spinbox_goal;
-    double joint_6_spinbox_goal;
-    int spinbox_goal_time;
+    int spinbox_trajectory_duration;
 
     static const int NUM_OF_JOINTS = 6;
     static const int HOMING_TIME = 10;
