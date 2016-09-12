@@ -8,7 +8,13 @@ int main(int argc, char *argv[])
     ros::NodeHandle nh;
 
     QApplication a(argc, argv);
-    MainWindow w(&nh);
+
+    int mode = MainWindow::SIMULATION;  //by default
+
+    if ((argc == 2) && (std::string(argv[1]) == "real_robot"))
+        mode = MainWindow::REAL_ROBOT;
+
+    MainWindow w(&nh, mode);
     w.show();
 
     return a.exec();

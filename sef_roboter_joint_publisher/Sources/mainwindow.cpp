@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-MainWindow::MainWindow(ros::NodeHandle *nh) :
+MainWindow::MainWindow(ros::NodeHandle *nh, int mode) :
     QMainWindow(0),
     ui(new Ui::MainWindow),
     timer_id(0),
@@ -16,8 +16,22 @@ MainWindow::MainWindow(ros::NodeHandle *nh) :
     // Subscribe to joint_states
     sub_joint_states = nh->subscribe("/sef_roboter/joint_states", 1, &MainWindow::jointStateCallback, this);
 
-    // Initialize publisher for jointTrajectory
-    pub_joint_trajectory = nh->advertise<trajectory_msgs::JointTrajectory > ("/sef_roboter/joints_controller/command", 1);
+    ROS_INFO("Mode %d", mode);
+
+    if(mode == SIMULATION)
+    {
+        // Initialize publisher for simulation mode
+        ROS_INFO("Initializing in simulation mode !");
+        pub_joint_trajectory = nh->advertise<trajectory_msgs::JointTrajectory > ("/sef_roboter/joints_controller/command", 1);
+        ui->label_mode->setText("<font color='green'>Gazebo Sim</font>");
+    }
+    else if(mode == REAL_ROBOT)
+    {
+        // Initialize publisher for real robot communication
+        ROS_INFO("Initializing in real robot mode !");
+        pub_joint_trajectory = nh->advertise<trajectory_msgs::JointTrajectory > ("/sef_roboter/velocity_trajectory_controller/command", 1);
+        ui->label_mode->setText("<font color='red'>REAL ROBOT</font>");
+    }
 
     // Start timer
     timer_id = startTimer(10);

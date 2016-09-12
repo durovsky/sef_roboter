@@ -15,8 +15,11 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(ros::NodeHandle *nh);
-    ~MainWindow();
+    enum Mode { SIMULATION = 1,
+                REAL_ROBOT = 2};
+
+    explicit MainWindow(ros::NodeHandle *nh, int mode);
+    ~MainWindow();         
 
 private slots:
     void on_button_move_to_home_clicked();
