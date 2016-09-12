@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<launch>
+
+  <!-- Start real robot hardware interface -->
+  <include file="$(find sef_roboter_ros_control)/launch/hardware.launch"/>
+
+  <!-- Run Basic Rviz visualization -->
+  <include file="$(find sef_roboter_ros_control)/launch/visualize.launch"/>
+
+  <!-- Run GUI Trajectory Generator -->
+  <node name="sef_roboter_joint_publisher" pkg="sef_roboter_joint_publisher" type="sef_roboter_joint_publisher" args="real_robot"/>
+  
+</launch>
+  
+  

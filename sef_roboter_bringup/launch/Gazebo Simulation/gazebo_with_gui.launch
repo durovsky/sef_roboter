@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<launch>
+
+  <!-- Start gazebo simulator -->
+  <include file="$(find sef_roboter_gazebo)/launch/sef_roboter_world.launch" />
+
+  <!-- Run controllers -->
+  <include file="$(find sef_roboter_ros_control)/launch/gazebo.launch" />
+
+  <!-- Run GUI Trajectory Generator -->
+  <node name="sef_roboter_joint_publisher" pkg="sef_roboter_joint_publisher" type="sef_roboter_joint_publisher"/>
+  
+</launch>
