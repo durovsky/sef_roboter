@@ -4,6 +4,7 @@ Complete ROS stack for Sef Roboter + ros_control
 **What is included:**
 - URDF model of SEF Roboter SR25
 - MoveIt Config package
+- QT Trajectory Message Generator for direct robot control
 - Simulation - Gazebo + MoveIt + ros_control 
 - Real Robot - Implemetation of HW interface + siemens_cp1616 wrapper + ros_control 
 - Bringup launch files for both simulation/real robot scenarios
