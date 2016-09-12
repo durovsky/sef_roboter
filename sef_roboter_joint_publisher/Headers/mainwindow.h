@@ -15,8 +15,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    enum Mode { SIMULATION = 1,
-                REAL_ROBOT = 2};
+    enum Mode { SIMULATION, REAL_ROBOT };
 
     explicit MainWindow(ros::NodeHandle *nh, int mode);
     ~MainWindow();         
