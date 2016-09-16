@@ -91,7 +91,7 @@ void MainWindow::on_button_move_to_home_clicked()
     {
         joint_name.str("");
         joint_name << "joint_" <<  (i + 1);
-        desired_configuration.positions[i] = 0.5;
+        desired_configuration.positions[i] = 0.0;
         arm_command.joint_names[i] = joint_name.str();
     }
 
