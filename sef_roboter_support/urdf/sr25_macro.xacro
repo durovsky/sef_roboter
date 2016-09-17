@@ -10,7 +10,7 @@
 			      <geometry>
 				    <mesh filename="package://sef_roboter_support/meshes/sr25/visual/sr25_base_axis.stl" />
 			      </geometry>
-			      <material name="black"/>			      
+            <material name="grey"/>
 		      </visual>
 		      <collision>
 			      <origin xyz="0.0 -0.001694 0.042616" rpy="0 0 0"/>
@@ -35,7 +35,7 @@
 			      <geometry>
 				    <mesh filename="package://sef_roboter_support/meshes/sr25/visual/sr25_axis_1.stl"  />
 			      </geometry>
-			      <material name="black"/>                      
+            <material name="grey"/>
 		      </visual>
 		      <collision>
 			      <geometry>
@@ -85,7 +85,7 @@
 			      <geometry>
 				    <mesh filename="package://sef_roboter_support/meshes/sr25/visual/sr25_axis_3.stl" />
 			      </geometry>
-			      <material name="black" />			         
+            <material name="grey" />
 		      </visual>
 		      <collision>
 			      <geometry>
@@ -158,7 +158,7 @@
 			      <geometry>
 				    <mesh filename="package://sef_roboter_support/meshes/sr25/visual/sr25_axis_tool.stl" />
 			      </geometry>
-			      <material name="black" />			         
+            <material name="grey" />
 		      </visual>
 		      <collision>
 			      <geometry>
