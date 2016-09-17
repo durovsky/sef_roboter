@@ -70,7 +70,7 @@ public:
   /** \brief Send initialization telegrams to all drives. */
   void initDrives();
 
-  /** \brief Homing Service Callback function. */
+  /** \brief Callback function for homing service. */
   bool homingCallback(sef_roboter_ros_control::homing::Request &req,
                       sef_roboter_ros_control::homing::Response &res);
 
@@ -111,10 +111,13 @@ private:
   ros::Publisher pub_trajectory;
 
   const int NUM_OF_JOINTS = 6;
-
-  const int DRIVE_TELEGRAM_TRANSMIT_SIZE = 12;
-  const int DRIVE_TELEGRAM_RECEIVE_SIZE = 32;
   const int RESOLVER_RESOLUTION = 2048;
+
+  const int CU_TELEGRAM_TRANSMIT_SIZE = 4;
+  const int CU_TELEGRAM_RECEIVE_SIZE = 4;
+
+  const int DRIVE_TELEGRAM_TRANSMIT_SIZE = 14;
+  const int DRIVE_TELEGRAM_RECEIVE_SIZE = 32;
   
   //Drive 01 consts & variables
   const double DRIVE_01_MAX_MOTOR_VELOCITY = 3000;	      		

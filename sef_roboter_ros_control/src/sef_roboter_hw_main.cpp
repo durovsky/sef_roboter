@@ -83,11 +83,14 @@ int main(int argc, char** argv)
           &sef_roboter_hw_control::SefRoboterHWInterface::homingCallback, sef_roboter_hw_interface);
   
   //Wait until communication starts properly
-  ros::Duration(5).sleep();
+  ros::Duration(10).sleep();
   
-  //Initialize drive 1
+  //Initialize drives
   sef_roboter_hw_interface->initDrives();
- 
+
+  //Safety delay
+  ros::Duration(1).sleep();
+
   // Start the control loop
   ros_control_boilerplate::GenericHWControlLoop control_loop(nh, sef_roboter_hw_interface);
 
