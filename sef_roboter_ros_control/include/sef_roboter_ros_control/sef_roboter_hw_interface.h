@@ -48,6 +48,7 @@
 //Headers required for direct homing command
 #include <trajectory_msgs/JointTrajectory.h>
 #include <sef_roboter_ros_control/homing.h>
+#include <sef_roboter_ros_control/reference_joint.h>
 
 namespace sef_roboter_hw_control
 {
@@ -73,6 +74,10 @@ public:
   /** \brief Callback function for homing service. */
   bool homingCallback(sef_roboter_ros_control::homing::Request &req,
                       sef_roboter_ros_control::homing::Response &res);
+
+  /** \brief Callback function for reference joint service. */
+  bool referenceJointCallback(sef_roboter_ros_control::reference_joint::Request &req,
+                              sef_roboter_ros_control::reference_joint::Response &res);
 
   /** \brief Callback function to process drive 1 states */
   void drive01Callback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data);
@@ -125,6 +130,7 @@ private:
   
   double drive_01_actual_position_rad;
   double drive_01_actual_velocity_rad_s;
+  bool drive_01_referencing_flag;
 
   //Drive 02 consts & variables
   const double DRIVE_02_MAX_MOTOR_VELOCITY = 3000;	      		
@@ -132,6 +138,7 @@ private:
   
   double drive_02_actual_position_rad;
   double drive_02_actual_velocity_rad_s;
+  bool drive_02_referencing_flag;
   
   //Drive 03 consts & variables
   const double DRIVE_03_MAX_MOTOR_VELOCITY = 3000;	      		
@@ -139,6 +146,7 @@ private:
   
   double drive_03_actual_position_rad;
   double drive_03_actual_velocity_rad_s;
+  bool drive_03_referencing_flag;
   
   //Drive 04 consts & variables
   const double DRIVE_04_MAX_MOTOR_VELOCITY = 6000;	      		
@@ -146,6 +154,7 @@ private:
   
   double drive_04_actual_position_rad;
   double drive_04_actual_velocity_rad_s;
+  bool drive_04_referencing_flag;
   
   //Drive 05 consts & variables
   const double DRIVE_05_MAX_MOTOR_VELOCITY = 6000;	      		
@@ -153,6 +162,7 @@ private:
   
   double drive_05_actual_position_rad;
   double drive_05_actual_velocity_rad_s;
+  bool drive_05_referencing_flag;
   
   //Drive 06 consts & variables
   const double DRIVE_06_MAX_MOTOR_VELOCITY = 6000;	      		
@@ -160,6 +170,7 @@ private:
   
   double drive_06_actual_position_rad;
   double drive_06_actual_velocity_rad_s;
+  bool drive_06_referencing_flag;
     
 };  // class
 

@@ -42,7 +42,13 @@ namespace sef_roboter_hw_control
 {
 
 SefRoboterHWInterface::SefRoboterHWInterface(ros::NodeHandle &nh, urdf::Model *urdf_model)
-  : ros_control_boilerplate::GenericHWInterface(nh, urdf_model)
+  : ros_control_boilerplate::GenericHWInterface(nh, urdf_model),
+    drive_01_referencing_flag(false),
+    drive_02_referencing_flag(false),
+    drive_03_referencing_flag(false),
+    drive_04_referencing_flag(false),
+    drive_05_referencing_flag(false),
+    drive_06_referencing_flag(false)
 {
   //Create publishers
   pub_drive_01_output_topic = nh.advertise<std_msgs::UInt8MultiArray>("/drive_1_output_topic", 1);
@@ -88,8 +94,8 @@ void SefRoboterHWInterface::initDrives(void)
   drive_telegram_4[9] =   0;  //G1_STW low
   drive_telegram_4[10] =  0;  //G2_STW high
   drive_telegram_4[11] =  0;  //G2_STW low
-  drive_telegram_4[12] =  0;  //Extended high
-  drive_telegram_4[13] =  0b00000001;  //Extended low
+  drive_telegram_4[12] =  0b00000000;  //Extended high
+  drive_telegram_4[13] =  0b00000001;  //Extended low - reset XIST1_ERW - p4655 to get corrected position feedback
 
   // Drive 01
   msg_dim.label = "Drive_1_output";
@@ -230,27 +236,45 @@ bool SefRoboterHWInterface::homingCallback(sef_roboter_ros_control::homing::Requ
   }
 }
 
+bool SefRoboterHWInterface::referenceJointCallback(sef_roboter_ros_control::reference_joint::Request &req,
+                                                   sef_roboter_ros_control::reference_joint::Response &res)
+{
+    int joint_number = req.joint_number;
+    bool retval = false;
+
+    switch(joint_number)
+    {
+      case 1: drive_01_referencing_flag = true; break;
+      case 2: drive_02_referencing_flag = true; break;
+      case 3: drive_03_referencing_flag = true; break;
+      case 4: drive_04_referencing_flag = true; break;
+      case 5: drive_05_referencing_flag = true; break;
+      case 6: drive_06_referencing_flag = true; break;
+      default: joint_number = -1;
+    }
+
+    // Joint number value accepted?
+    (joint_number == -1) ? retval = false : retval = true;
+
+    res.accepted = retval;
+    return retval;
+}
+
 void SefRoboterHWInterface::drive01Callback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data)
 {
   
   int received_byte_array[DRIVE_TELEGRAM_RECEIVE_SIZE];
-  int position_raw, position_corrected_raw, velocity_raw;
-  double motor_position_rad, motor_position_corrected_rad, motor_velocity_rpm;
+  int position_raw, velocity_raw;
+  double motor_position_rad, motor_velocity_rpm;
     
   for(int i = 0; i < DRIVE_TELEGRAM_RECEIVE_SIZE; i++)
     received_byte_array[i] = callback_data->data[i];
    	     
   //Get actual position as 4 unsigned chars 
-  position_raw = (received_byte_array[10] << 24) +
-	         (received_byte_array[11] << 16) +
-	         (received_byte_array[12] << 8)  +
-	          received_byte_array[13];
-
-  //Get actual corrected position
-  position_corrected_raw = (received_byte_array[28] << 24) +
-            (received_byte_array[29] << 16) +
-            (received_byte_array[30] << 8)  +
-             received_byte_array[31];
+  position_raw = (received_byte_array[28] << 24) +
+             (received_byte_array[29] << 16) +
+             (received_byte_array[30] << 8)  +
+              received_byte_array[31];
 
   //Get actual velocity as 4 unsigned chars
   velocity_raw = (received_byte_array[2] << 24) + 
@@ -261,11 +285,8 @@ void SefRoboterHWInterface::drive01Callback(const std_msgs::UInt8MultiArray::Con
   //Motor position in radians 
   motor_position_rad = (double)position_raw / RESOLVER_RESOLUTION;
 	
-  //Motor position in radians after correction
-  motor_position_corrected_rad = (double)position_corrected_raw / RESOLVER_RESOLUTION;
-
   //Joint Position in radians
-  drive_01_actual_position_rad = motor_position_corrected_rad * 2 * M_PI / DRIVE_01_RATIO;
+  drive_01_actual_position_rad = motor_position_rad * 2 * M_PI / DRIVE_01_RATIO;
   
   //Motor Velocity rpm
   motor_velocity_rpm = (double)velocity_raw * (DRIVE_01_MAX_MOTOR_VELOCITY / 0x40000000);
@@ -281,23 +302,17 @@ void SefRoboterHWInterface::drive01Callback(const std_msgs::UInt8MultiArray::Con
 void SefRoboterHWInterface::drive02Callback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data)
 {
   int received_byte_array[DRIVE_TELEGRAM_RECEIVE_SIZE];
-  int position_raw, position_corrected_raw, velocity_raw;
-  double motor_position_rad, motor_position_corrected_rad, motor_velocity_rpm;
+  int position_raw, velocity_raw;
+  double motor_position_rad, motor_velocity_rpm;
 
   for(int i = 0; i < DRIVE_TELEGRAM_RECEIVE_SIZE; i++)
     received_byte_array[i] = callback_data->data[i];
 
   //Get actual position as 4 unsigned chars
-  position_raw = (received_byte_array[10] << 24) +
-                 (received_byte_array[11] << 16) +
-                 (received_byte_array[12] << 8)  +
-                  received_byte_array[13];
-
-  //Get actual corrected position
-  position_corrected_raw = (received_byte_array[28] << 24) +
-                (received_byte_array[29] << 16) +
-                (received_byte_array[30] << 8)  +
-                 received_byte_array[31];
+  position_raw = (received_byte_array[28] << 24) +
+                 (received_byte_array[29] << 16) +
+                 (received_byte_array[30] << 8)  +
+                  received_byte_array[31];
 
   //Get actual velocity as 4 unsigned chars
   velocity_raw = (received_byte_array[2] << 24) +
@@ -308,11 +323,8 @@ void SefRoboterHWInterface::drive02Callback(const std_msgs::UInt8MultiArray::Con
   //Motor position in radians
   motor_position_rad = (double)position_raw / RESOLVER_RESOLUTION;
 
-  //Motor position in radians after correction
-  motor_position_corrected_rad = (double)position_corrected_raw / RESOLVER_RESOLUTION;
-
   //Joint Position in radians
-  drive_02_actual_position_rad = motor_position_corrected_rad * 2 * M_PI / DRIVE_02_RATIO;
+  drive_02_actual_position_rad = motor_position_rad * 2 * M_PI / DRIVE_02_RATIO;
   
   //Motor Velocity rpm
   motor_velocity_rpm = (double)velocity_raw * (DRIVE_02_MAX_MOTOR_VELOCITY / 0x40000000);
@@ -327,23 +339,17 @@ void SefRoboterHWInterface::drive02Callback(const std_msgs::UInt8MultiArray::Con
 void SefRoboterHWInterface::drive03Callback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data)
 {
   int received_byte_array[DRIVE_TELEGRAM_RECEIVE_SIZE];
-  int position_raw, position_corrected_raw, velocity_raw;
-  double motor_position_rad, motor_position_corrected_rad, motor_velocity_rpm;
+  int position_raw, velocity_raw;
+  double motor_position_rad, motor_velocity_rpm;
 
   for(int i = 0; i < DRIVE_TELEGRAM_RECEIVE_SIZE; i++)
     received_byte_array[i] = callback_data->data[i];
 
   //Get actual position as 4 unsigned chars
-  position_raw = (received_byte_array[10] << 24) +
-                 (received_byte_array[11] << 16) +
-                 (received_byte_array[12] << 8)  +
-                  received_byte_array[13];
-
-  //Get actual corrected position
-  position_corrected_raw = (received_byte_array[28] << 24) +
-                (received_byte_array[29] << 16) +
-                (received_byte_array[30] << 8)  +
-                 received_byte_array[31];
+  position_raw = (received_byte_array[28] << 24) +
+                 (received_byte_array[29] << 16) +
+                 (received_byte_array[30] << 8)  +
+                  received_byte_array[31];
 
   //Get actual velocity as 4 unsigned chars
   velocity_raw = (received_byte_array[2] << 24) +
@@ -354,11 +360,8 @@ void SefRoboterHWInterface::drive03Callback(const std_msgs::UInt8MultiArray::Con
   //Motor position in radians
   motor_position_rad = (double)position_raw / RESOLVER_RESOLUTION;
 
-  //Motor position in radians after correction
-  motor_position_corrected_rad = (double)position_corrected_raw / RESOLVER_RESOLUTION;
-
   //Joint Position in radians
-  drive_03_actual_position_rad = motor_position_corrected_rad * 2 * M_PI / DRIVE_03_RATIO;
+  drive_03_actual_position_rad = motor_position_rad * 2 * M_PI / DRIVE_03_RATIO;
   
   //Motor Velocity rpm
   motor_velocity_rpm = (double)velocity_raw * (DRIVE_03_MAX_MOTOR_VELOCITY / 0x40000000);
@@ -373,23 +376,17 @@ void SefRoboterHWInterface::drive03Callback(const std_msgs::UInt8MultiArray::Con
 void SefRoboterHWInterface::drive04Callback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data)
 {
   int received_byte_array[DRIVE_TELEGRAM_RECEIVE_SIZE];
-  int position_raw, position_corrected_raw, velocity_raw;
-  double motor_position_rad, motor_position_corrected_rad, motor_velocity_rpm;
+  int position_raw, velocity_raw;
+  double motor_position_rad, motor_velocity_rpm;
 
   for(int i = 0; i < DRIVE_TELEGRAM_RECEIVE_SIZE; i++)
     received_byte_array[i] = callback_data->data[i];
 
   //Get actual position as 4 unsigned chars
-  position_raw = (received_byte_array[10] << 24) +
-                 (received_byte_array[11] << 16) +
-                 (received_byte_array[12] << 8)  +
-                  received_byte_array[13];
-
-  //Get actual corrected position
-  position_corrected_raw = (received_byte_array[28] << 24) +
-                (received_byte_array[29] << 16) +
-                (received_byte_array[30] << 8)  +
-                 received_byte_array[31];
+  position_raw = (received_byte_array[28] << 24) +
+                 (received_byte_array[29] << 16) +
+                 (received_byte_array[30] << 8)  +
+                  received_byte_array[31];
 
   //Get actual velocity as 4 unsigned chars
   velocity_raw = (received_byte_array[2] << 24) +
@@ -400,11 +397,8 @@ void SefRoboterHWInterface::drive04Callback(const std_msgs::UInt8MultiArray::Con
   //Motor position in radians
   motor_position_rad = (double)position_raw / RESOLVER_RESOLUTION;
 
-  //Motor position in radians after correction
-  motor_position_corrected_rad = (double)position_corrected_raw / RESOLVER_RESOLUTION;
-
   //Joint Position in radians
-  drive_04_actual_position_rad = motor_position_corrected_rad * 2 * M_PI / DRIVE_04_RATIO ;
+  drive_04_actual_position_rad = motor_position_rad * 2 * M_PI / DRIVE_04_RATIO ;
   
   //Motor Velocity rpm
   motor_velocity_rpm = (double)velocity_raw * (DRIVE_04_MAX_MOTOR_VELOCITY / 0x40000000);
@@ -419,23 +413,17 @@ void SefRoboterHWInterface::drive04Callback(const std_msgs::UInt8MultiArray::Con
 void SefRoboterHWInterface::drive05Callback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data)
 {
   int received_byte_array[DRIVE_TELEGRAM_RECEIVE_SIZE];
-  int position_raw, position_corrected_raw, velocity_raw;
-  double motor_position_rad, motor_position_corrected_rad, motor_velocity_rpm;
+  int position_raw, velocity_raw;
+  double motor_position_rad, motor_velocity_rpm;
 
   for(int i = 0; i < DRIVE_TELEGRAM_RECEIVE_SIZE; i++)
     received_byte_array[i] = callback_data->data[i];
 
   //Get actual position as 4 unsigned chars
-  position_raw = (received_byte_array[10] << 24) +
-                 (received_byte_array[11] << 16) +
-                 (received_byte_array[12] << 8)  +
-                  received_byte_array[13];
-
-  //Get actual corrected position
-  position_corrected_raw = (received_byte_array[28] << 24) +
-                (received_byte_array[29] << 16) +
-                (received_byte_array[30] << 8)  +
-                 received_byte_array[31];
+  position_raw = (received_byte_array[28] << 24) +
+                 (received_byte_array[29] << 16) +
+                 (received_byte_array[30] << 8)  +
+                  received_byte_array[31];
 
   //Get actual velocity as 4 unsigned chars
   velocity_raw = (received_byte_array[2] << 24) +
@@ -446,11 +434,8 @@ void SefRoboterHWInterface::drive05Callback(const std_msgs::UInt8MultiArray::Con
   //Motor position in radians
   motor_position_rad = (double)position_raw / RESOLVER_RESOLUTION;
 
-  //Motor position in radians after correction
-  motor_position_corrected_rad = (double)position_corrected_raw / RESOLVER_RESOLUTION;
-
   //Joint Position in radians
-  drive_05_actual_position_rad = motor_position_corrected_rad * 2 * M_PI / DRIVE_05_RATIO;
+  drive_05_actual_position_rad = motor_position_rad * 2 * M_PI / DRIVE_05_RATIO;
   
   //Motor Velocity rpm
   motor_velocity_rpm = (double)velocity_raw * (DRIVE_05_MAX_MOTOR_VELOCITY / 0x40000000);
@@ -465,23 +450,17 @@ void SefRoboterHWInterface::drive05Callback(const std_msgs::UInt8MultiArray::Con
 void SefRoboterHWInterface::drive06Callback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data)
 {
   int received_byte_array[DRIVE_TELEGRAM_RECEIVE_SIZE];
-  int position_raw, position_corrected_raw, velocity_raw;
-  double motor_position_rad, motor_position_corrected_rad, motor_velocity_rpm;
+  int position_raw, velocity_raw;
+  double motor_position_rad, motor_velocity_rpm;
 
   for(int i = 0; i < DRIVE_TELEGRAM_RECEIVE_SIZE; i++)
     received_byte_array[i] = callback_data->data[i];
 
   //Get actual position as 4 unsigned chars
-  position_raw = (received_byte_array[10] << 24) +
-                 (received_byte_array[11] << 16) +
-                 (received_byte_array[12] << 8)  +
-                  received_byte_array[13];
-
-  //Get actual corrected position
-  position_corrected_raw = (received_byte_array[28] << 24) +
-                (received_byte_array[29] << 16) +
-                (received_byte_array[30] << 8)  +
-                 received_byte_array[31];
+  position_raw = (received_byte_array[28] << 24) +
+                 (received_byte_array[29] << 16) +
+                 (received_byte_array[30] << 8)  +
+                  received_byte_array[31];
 
   //Get actual velocity as 4 unsigned chars
   velocity_raw = (received_byte_array[2] << 24) +
@@ -492,11 +471,8 @@ void SefRoboterHWInterface::drive06Callback(const std_msgs::UInt8MultiArray::Con
   //Motor position in radians
   motor_position_rad = (double)position_raw / RESOLVER_RESOLUTION;
 
-  //Motor position in radians after correction
-  motor_position_corrected_rad = (double)position_corrected_raw / RESOLVER_RESOLUTION;
-
   //Joint Position in radians
-  drive_06_actual_position_rad = motor_position_corrected_rad * 2 * M_PI / DRIVE_06_RATIO;
+  drive_06_actual_position_rad = motor_position_rad * 2 * M_PI / DRIVE_06_RATIO;
   
   //Motor Velocity rpm
   motor_velocity_rpm = (double)velocity_raw * (DRIVE_06_MAX_MOTOR_VELOCITY / 0x40000000);
@@ -557,6 +533,9 @@ void SefRoboterHWInterface::write(ros::Duration &elapsed_time)
   //Get joint_velocity_command from controller in radians 
   double velocity_rad = -joint_velocity_command_[0];        //! Changing command direction here (CW - CCW)
   
+  //If referencing mode active - set velocity to zero
+  if (drive_01_referencing_flag == true) velocity_rad = 0;
+
   //Convert to motor rpm (transmission included)
   double velocity_rpm = velocity_rad *DRIVE_01_RATIO * 60 / (2 * M_PI);
   
@@ -588,9 +567,18 @@ void SefRoboterHWInterface::write(ros::Duration &elapsed_time)
   drive_telegram_4[9] =   0b00000000;  //G1_STW low
   drive_telegram_4[10] =  0b00000000;  //G2_STW high
   drive_telegram_4[11] =  0b00000000;  //G2_STW low
-  drive_telegram_4[12] =  0b00000000;  //Extended high
-  drive_telegram_4[13] =  0b00000000;  //Extended low
 
+  // If referencing service was called reset encoder
+  if(drive_01_referencing_flag == true)
+  {
+    drive_telegram_4[12] =  0b00000000;  //Extended high
+    drive_telegram_4[13] =  0b00000001;  //Extended low - reset encoder
+  }
+  else
+  {
+    drive_telegram_4[12] =  0b00000000;  //Extended high
+    drive_telegram_4[13] =  0b00000000;  //Extended low
+  }
   
   //copy telegram data
   msg.data.clear();
@@ -611,6 +599,9 @@ void SefRoboterHWInterface::write(ros::Duration &elapsed_time)
   //Get joint_velocity_command from controller in radians 
   velocity_rad = -joint_velocity_command_[1];               //! Changing command direction here (CW - CCW)
   
+  //If referencing mode active - set velocity to zero
+  if (drive_02_referencing_flag == true) velocity_rad = 0;
+
   //Convert to motor rpm (transmission included)
   velocity_rpm = velocity_rad *DRIVE_02_RATIO * 60 / (2 * M_PI);
   
@@ -639,8 +630,18 @@ void SefRoboterHWInterface::write(ros::Duration &elapsed_time)
   drive_telegram_4[9] =   0b00000000;  //G1_STW low
   drive_telegram_4[10] =  0b00000000;  //G2_STW high
   drive_telegram_4[11] =  0b00000000;  //G2_STW low
-  drive_telegram_4[12] =  0b00000000;  //Extended high
-  drive_telegram_4[13] =  0b00000000;  //Extended low
+
+  // If referencing service was called, reset encoder
+  if(drive_02_referencing_flag == true)
+  {
+    drive_telegram_4[12] =  0b00000000;  //Extended high
+    drive_telegram_4[13] =  0b00000001;  //Extended low - reset encoder
+  }
+  else
+  {
+    drive_telegram_4[12] =  0b00000000;  //Extended high
+    drive_telegram_4[13] =  0b00000000;  //Extended low
+  }
   
   //copy telegram data
   msg.data.clear();
@@ -661,6 +662,9 @@ void SefRoboterHWInterface::write(ros::Duration &elapsed_time)
   //Get joint_velocity_command from controller in radians 
   velocity_rad = joint_velocity_command_[2];
   
+  //If referencing mode active - set velocity to zero
+  if (drive_03_referencing_flag == true) velocity_rad = 0;
+
   //Convert to motor rpm (transmission included)
   velocity_rpm = velocity_rad *DRIVE_03_RATIO * 60 / (2 * M_PI);
   
@@ -689,8 +693,18 @@ void SefRoboterHWInterface::write(ros::Duration &elapsed_time)
   drive_telegram_4[9] =   0b00000000;  //G1_STW low
   drive_telegram_4[10] =  0b00000000;  //G2_STW high
   drive_telegram_4[11] =  0b00000000;  //G2_STW low
-  drive_telegram_4[12] =  0b00000000;  //Extended high
-  drive_telegram_4[13] =  0b00000000;  //Extended low
+
+  // If referencing service was called, reset encoder
+  if(drive_03_referencing_flag == true)
+  {
+    drive_telegram_4[12] =  0b00000000;  //Extended high
+    drive_telegram_4[13] =  0b00000001;  //Extended low - reset encoder
+  }
+  else
+  {
+    drive_telegram_4[12] =  0b00000000;  //Extended high
+    drive_telegram_4[13] =  0b00000000;  //Extended low
+  }
   
   //copy telegram data
   msg.data.clear();
@@ -711,6 +725,9 @@ void SefRoboterHWInterface::write(ros::Duration &elapsed_time)
   //Get joint_velocity_command from controller in radians 
   velocity_rad = joint_velocity_command_[3];
   
+  //If referencing mode active - set velocity to zero
+  if (drive_04_referencing_flag == true) velocity_rad = 0;
+
   //Convert to motor rpm (transmission included)
   velocity_rpm = velocity_rad * DRIVE_04_RATIO * 60 / (2 * M_PI);
   
@@ -739,8 +756,18 @@ void SefRoboterHWInterface::write(ros::Duration &elapsed_time)
   drive_telegram_4[9] =   0b00000000;  //G1_STW low
   drive_telegram_4[10] =  0b00000000;  //G2_STW high
   drive_telegram_4[11] =  0b00000000;  //G2_STW low
-  drive_telegram_4[12] =  0b00000000;  //Extended high
-  drive_telegram_4[13] =  0b00000000;  //Extended low
+
+  // If referencing service was called, reset encoder
+  if(drive_04_referencing_flag == true)
+  {
+    drive_telegram_4[12] =  0b00000000;  //Extended high
+    drive_telegram_4[13] =  0b00000001;  //Extended low - reset encoder
+  }
+  else
+  {
+    drive_telegram_4[12] =  0b00000000;  //Extended high
+    drive_telegram_4[13] =  0b00000000;  //Extended low
+  }
   
   //copy telegram data
   msg.data.clear();
@@ -761,6 +788,9 @@ void SefRoboterHWInterface::write(ros::Duration &elapsed_time)
   //Get joint_velocity_command from controller in radians 
   velocity_rad = -joint_velocity_command_[4];               //! Changing command direction here (CW - CCW)
   
+  //If referencing mode active - set velocity to zero
+  if (drive_05_referencing_flag == true) velocity_rad = 0;
+
   //Convert to motor rpm (transmission included)
   velocity_rpm = velocity_rad *DRIVE_05_RATIO * 60 / (2 * M_PI);
   
@@ -789,8 +819,18 @@ void SefRoboterHWInterface::write(ros::Duration &elapsed_time)
   drive_telegram_4[9] =   0b00000000;  //G1_STW low
   drive_telegram_4[10] =  0b00000000;  //G2_STW high
   drive_telegram_4[11] =  0b00000000;  //G2_STW low
-  drive_telegram_4[12] =  0b00000000;  //Extended high
-  drive_telegram_4[13] =  0b00000000;  //Extended low
+
+  // If referencing service was called, reset encoder
+  if(drive_05_referencing_flag == true)
+  {
+    drive_telegram_4[12] =  0b00000000;  //Extended high
+    drive_telegram_4[13] =  0b00000001;  //Extended low - reset encoder
+  }
+  else
+  {
+    drive_telegram_4[12] =  0b00000000;  //Extended high
+    drive_telegram_4[13] =  0b00000000;  //Extended low
+  }
   
   //copy telegram data
   msg.data.clear();
@@ -811,6 +851,9 @@ void SefRoboterHWInterface::write(ros::Duration &elapsed_time)
   //Get joint_velocity_command from controller in radians 
   velocity_rad = joint_velocity_command_[5];
   
+  //If referencing mode active - set velocity to zero
+  if (drive_06_referencing_flag == true) velocity_rad = 0;
+
   //Convert to motor rpm (transmission included)
   velocity_rpm = velocity_rad * DRIVE_06_RATIO * 60 / (2 * M_PI);
   
@@ -839,9 +882,19 @@ void SefRoboterHWInterface::write(ros::Duration &elapsed_time)
   drive_telegram_4[9] =   0b00000000;  //G1_STW low
   drive_telegram_4[10] =  0b00000000;  //G2_STW high
   drive_telegram_4[11] =  0b00000000;  //G2_STW low
-  drive_telegram_4[12] =  0b00000000;  //Extended high
-  drive_telegram_4[13] =  0b00000000;  //Extended low
-  
+
+  // If referencing service was called, reset encoder
+  if(drive_06_referencing_flag == true)
+  {
+    drive_telegram_4[12] =  0b00000000;  //Extended high
+    drive_telegram_4[13] =  0b00000001;  //Extended low - reset encoder
+  }
+  else
+  {
+    drive_telegram_4[12] =  0b00000000;  //Extended high
+    drive_telegram_4[13] =  0b00000000;  //Extended low
+  }
+
   //copy telegram data
   msg.data.clear();
   for(int i = 0;  i < DRIVE_TELEGRAM_TRANSMIT_SIZE; i++)

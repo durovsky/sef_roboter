@@ -4,6 +4,7 @@
 MainWindow::MainWindow(ros::NodeHandle *nh, int mode) :
     QMainWindow(0),
     ui(new Ui::MainWindow),
+    mode(mode),
     timer_id(0),
     slider_trajectory_duration(5),
     spinbox_trajectory_duration(5)
@@ -31,7 +32,11 @@ MainWindow::MainWindow(ros::NodeHandle *nh, int mode) :
         ROS_INFO("Initializing in real robot mode !");
         pub_joint_trajectory = nh->advertise<trajectory_msgs::JointTrajectory > ("/sef_roboter/velocity_trajectory_controller/command", 1);
         ui->label_mode->setText("<font color='red'>REAL ROBOT</font>");
+
+        //Initialize service client for referencing purposes
+        srv_reference_joint_client = nh->serviceClient<sef_roboter_ros_control::reference_joint>("reference_joint");
     }
+
 
     // Start timer
     timer_id = startTimer(10);
@@ -248,4 +253,116 @@ void MainWindow::on_spinbox_slider_duration_valueChanged(int arg1)
 void MainWindow::on_spinbox_spinbox_duration_valueChanged(int arg1)
 {
     spinbox_trajectory_duration = arg1;
+}
+
+void MainWindow::on_button_reference_joint_1_clicked()
+{
+    if(mode == REAL_ROBOT)
+    {
+        sef_roboter_ros_control::reference_joint srv;
+        srv.request.joint_number = 1;
+
+        ui->label_joint_blocked_1->setText("<font color='red'>!!!</font>");
+
+        if (srv_reference_joint_client.call(srv))
+            ROS_INFO("Referencing Joint 1: %d", srv.response.accepted);
+        else
+            ROS_ERROR("Failed to call reference_joint for Joint 1");
+    }
+    else
+        ROS_WARN("Referencing allowed only in REAL ROBOT mode");
+}
+
+void MainWindow::on_button_reference_joint_2_clicked()
+{
+    if(mode == REAL_ROBOT)
+    {
+        sef_roboter_ros_control::reference_joint srv;
+        srv.request.joint_number = 2;
+
+        ui->label_joint_blocked_2->setText("<font color='red'>!!!</font>");
+
+        if (srv_reference_joint_client.call(srv))
+            ROS_INFO("Referencing Joint 2: %d", srv.response.accepted);
+        else
+            ROS_ERROR("Failed to call reference_joint for Joint 2");
+    }
+    else
+        ROS_WARN("Referencing allowed only in REAL ROBOT mode");
+}
+
+void MainWindow::on_button_reference_joint_3_clicked()
+{
+    if(mode == REAL_ROBOT)
+    {
+        sef_roboter_ros_control::reference_joint srv;
+        srv.request.joint_number = 3;
+
+        ui->label_joint_blocked_3->setText("<font color='red'>!!!</font>");
+
+        if (srv_reference_joint_client.call(srv))
+            ROS_INFO("Referencing Joint 3: %d", srv.response.accepted);
+        else
+            ROS_ERROR("Failed to call reference_joint for Joint 3");
+    }
+    else
+        ROS_WARN("Referencing allowed only in REAL ROBOT mode");
+
+}
+
+void MainWindow::on_button_reference_joint_4_clicked()
+{
+    if(mode == REAL_ROBOT)
+    {
+        sef_roboter_ros_control::reference_joint srv;
+        srv.request.joint_number = 4;
+
+        ui->label_joint_blocked_4->setText("<font color='red'>!!!</font>");
+
+        if (srv_reference_joint_client.call(srv))
+            ROS_INFO("Referencing Joint 4: %d", srv.response.accepted);
+        else
+            ROS_ERROR("Failed to call reference_joint for Joint 4");
+    }
+    else
+        ROS_WARN("Referencing allowed only in REAL ROBOT mode");
+
+}
+
+void MainWindow::on_button_reference_joint_5_clicked()
+{
+    if(mode == REAL_ROBOT)
+    {
+        sef_roboter_ros_control::reference_joint srv;
+        srv.request.joint_number = 5;
+
+        ui->label_joint_blocked_5->setText("<font color='red'>!!!</font>");
+
+        if (srv_reference_joint_client.call(srv))
+            ROS_INFO("Referencing Joint 5: %d", srv.response.accepted);
+        else
+            ROS_ERROR("Failed to call reference_joint for Joint 5");
+    }
+    else
+        ROS_WARN("Referencing allowed only in REAL ROBOT mode");
+
+}
+
+void MainWindow::on_button_reference_joint_6_clicked()
+{
+    if(mode == REAL_ROBOT)
+    {
+        sef_roboter_ros_control::reference_joint srv;
+        srv.request.joint_number = 6;
+
+        ui->label_joint_blocked_6->setText("<font color='red'>!!!</font>");
+
+        if (srv_reference_joint_client.call(srv))
+            ROS_INFO("Referencing Joint 6: %d", srv.response.accepted);
+        else
+            ROS_ERROR("Failed to call reference_joint for Joint 6");
+    }
+    else
+        ROS_WARN("Referencing allowed only in REAL ROBOT mode");
+
 }

@@ -81,6 +81,10 @@ int main(int argc, char** argv)
   // Create Homing service
   ros::ServiceServer homing_service = nh.advertiseService("/homing",
           &sef_roboter_hw_control::SefRoboterHWInterface::homingCallback, sef_roboter_hw_interface);
+
+  //Create Reference Joint service
+  ros::ServiceServer reference_joint_service = nh.advertiseService("/reference_joint",
+          &sef_roboter_hw_control::SefRoboterHWInterface::referenceJointCallback, sef_roboter_hw_interface);
   
   //Wait until communication starts properly
   ros::Duration(10).sleep();

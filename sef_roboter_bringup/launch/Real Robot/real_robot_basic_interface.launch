@@ -4,7 +4,4 @@
   <!-- Start real robot hardware interface -->
   <include file="$(find sef_roboter_ros_control)/launch/hardware.launch"/>
 
-  <!-- Run Basic Rviz visualization -->
-  <include file="$(find sef_roboter_ros_control)/launch/visualize.launch"/>
-
 </launch>

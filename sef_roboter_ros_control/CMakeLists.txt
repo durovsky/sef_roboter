@@ -17,6 +17,7 @@ include_directories(${ros_control_boilerplate_INCLUDE_DIRS})
 add_service_files(
   FILES
   homing.srv
+  reference_joint.srv
 )
 
 generate_messages(

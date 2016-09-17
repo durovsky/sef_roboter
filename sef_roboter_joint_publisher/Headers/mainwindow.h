@@ -5,6 +5,7 @@
 #include <ros/ros.h>
 #include <sensor_msgs/JointState.h>
 #include "trajectory_msgs/JointTrajectory.h"
+#include "sef_roboter_ros_control/reference_joint.h"
 
 namespace Ui {
 class MainWindow;
@@ -24,6 +25,12 @@ private slots:
     void on_button_move_to_home_clicked();
     void on_button_move_to_slider_goal_clicked();
     void on_button_move_to_spinbox_goal_clicked();
+    void on_button_reference_joint_1_clicked();
+    void on_button_reference_joint_2_clicked();
+    void on_button_reference_joint_3_clicked();
+    void on_button_reference_joint_4_clicked();
+    void on_button_reference_joint_5_clicked();
+    void on_button_reference_joint_6_clicked();
     void on_slider_joint_1_valueChanged(int value);
     void on_slider_joint_2_valueChanged(int value);
     void on_slider_joint_3_valueChanged(int value);
@@ -39,6 +46,7 @@ private slots:
     void on_spinbox_slider_duration_valueChanged(int arg1);
     void on_spinbox_spinbox_duration_valueChanged(int arg1);
 
+
 private:
     void jointStateCallback(const sensor_msgs::JointStateConstPtr &msg);
 
@@ -47,7 +55,9 @@ private:
     ros::NodeHandle *nh;
     ros::Subscriber sub_joint_states;
     ros::Publisher pub_joint_trajectory;
+    ros::ServiceClient srv_reference_joint_client;
 
+    int mode;
     int timer_id;
 
     std::vector<double> slider_goals;
