@@ -24,10 +24,10 @@
      </rect>
     </property>
     <property name="minimum">
-     <number>-200</number>
+     <number>-100</number>
     </property>
     <property name="maximum">
-     <number>200</number>
+     <number>100</number>
     </property>
     <property name="singleStep">
      <number>1</number>
@@ -93,10 +93,10 @@
      <set>Qt::AlignCenter</set>
     </property>
     <property name="minimum">
-     <double>-2.000000000000000</double>
+     <double>-1.000000000000000</double>
     </property>
     <property name="maximum">
-     <double>2.000000000000000</double>
+     <double>1.000000000000000</double>
     </property>
     <property name="singleStep">
      <double>0.010000000000000</double>
@@ -134,9 +134,9 @@
    <widget class="QLabel" name="label_main">
     <property name="geometry">
      <rect>
-      <x>130</x>
+      <x>230</x>
       <y>0</y>
-      <width>331</width>
+      <width>221</width>
       <height>31</height>
      </rect>
     </property>
@@ -148,7 +148,7 @@
      </font>
     </property>
     <property name="text">
-     <string>SR25 Joint Trajectory Generator</string>
+     <string>SR25 Joint Publisher</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_goal_value_2">
@@ -579,7 +579,7 @@
      </font>
     </property>
     <property name="text">
-     <string>-2</string>
+     <string>-1</string>
     </property>
     <property name="textFormat">
      <enum>Qt::AutoText</enum>
@@ -605,7 +605,7 @@
      </font>
     </property>
     <property name="text">
-     <string>2</string>
+     <string>1</string>
     </property>
     <property name="textFormat">
      <enum>Qt::AutoText</enum>
