@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package>
+  <name>sef_roboter_ik_analysis</name>
+  <version>0.0.0</version>
+  <description>The sef_roboter_ik_analysis package</description>
+  <maintainer email="durovsky987@gmail.com">durovsky</maintainer>
+
+  <license>BSD</license>
+  <url type="website">http://www.smartroboticsys.eu/?cat=9</url> -->
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>moveit_core</build_depend>
+  <build_depend>moveit_ros_planning_interface</build_depend>
+  <build_depend>cmake_modules</build_depend>
+
+  <run_depend>moveit_core</run_depend>
+  <run_depend>moveit_ros_planning_interface</run_depend>
+
+</package>

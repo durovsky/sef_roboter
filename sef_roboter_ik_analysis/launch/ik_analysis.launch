@@ -1,0 +1,13 @@
+<launch>
+  <include file="$(find sef_roboter_moveit_config)/launch/planning_context.launch">
+    <arg name="load_robot_description" value="true"/>
+  </include>
+
+  <node name="sef_roboter_ik_analysis"
+        pkg="sef_roboter_ik_analysis"
+        type="sef_roboter_ik_analysis"
+        respawn="false" output="screen">
+    <rosparam command="load"
+              file="$(find sef_roboter_moveit_config)/config/kinematics.yaml"/>
+  </node>
+</launch>
