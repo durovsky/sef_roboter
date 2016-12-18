@@ -9,6 +9,7 @@ Panels:
         - /Grid1
         - /RobotModel1
         - /TF1
+        - /TF1/Frames1
       Splitter Ratio: 0.553633
     Tree Height: 606
   - Class: rviz/Selection
@@ -91,11 +92,19 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        link_tool:
+        link_6:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
+        tool0:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        world:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
       Name: RobotModel
       Robot Description: robot_description
       TF Prefix: ""
@@ -103,40 +112,19 @@ Visualization Manager:
       Value: true
       Visual Enabled: true
     - Class: rviz/TF
-      Enabled: true
+      Enabled: false
       Frame Timeout: 15
       Frames:
-        All Enabled: true
-        base_link:
-          Value: true
-        link_1:
-          Value: true
-        link_2:
-          Value: true
-        link_3:
-          Value: true
-        link_4:
-          Value: true
-        link_5:
-          Value: true
-        link_tool:
-          Value: true
-      Marker Scale: 0.2
+        All Enabled: false
+      Marker Scale: 0.8
       Name: TF
       Show Arrows: true
       Show Axes: true
       Show Names: true
       Tree:
-        base_link:
-          link_1:
-            link_2:
-              link_3:
-                link_4:
-                  link_5:
-                    link_tool:
-                      {}
+        {}
       Update Interval: 0
-      Value: true
+      Value: false
   Enabled: true
   Global Options:
     Background Color: 0; 0; 0
@@ -173,10 +161,10 @@ Visualization Manager:
         Z: -1.17866e-07
       Name: Current View
       Near Clip Distance: 0.01
-      Pitch: 0.135399
+      Pitch: 0.320399
       Target Frame: <Fixed Frame>
       Value: XYOrbit (rviz)
-      Yaw: 0.565409
+      Yaw: 0.205407
     Saved: ~
 Window Geometry:
   Displays:
@@ -194,5 +182,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1525
-  X: 286
-  Y: 102
+  X: 266
+  Y: 82
