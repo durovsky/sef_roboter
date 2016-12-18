@@ -15,3 +15,6 @@ More information about this project is available at [Smart Robotic Systems](http
 
 
 <img src="http://www.smartroboticsys.eu/wp-content/uploads/2016/09/SEF.jpg" width="640">
+
+
+<img src="http://www.smartroboticsys.eu/wp-content/uploads/2016/09/SR25_joint_publisher.png" width="640">

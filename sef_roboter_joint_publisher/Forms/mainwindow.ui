@@ -582,7 +582,7 @@
      </font>
     </property>
     <property name="text">
-     <string>-2</string>
+     <string>-1</string>
     </property>
     <property name="textFormat">
      <enum>Qt::AutoText</enum>
@@ -608,7 +608,7 @@
      </font>
     </property>
     <property name="text">
-     <string>2</string>
+     <string>1</string>
     </property>
     <property name="textFormat">
      <enum>Qt::AutoText</enum>
