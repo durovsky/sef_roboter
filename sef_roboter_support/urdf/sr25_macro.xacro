@@ -6,16 +6,16 @@
 	    
 	      <link name="${prefix}base_link">
 		      <visual>
-			      <origin xyz="0.0 -0.001694 0.042616" rpy="0 0 0"/>
+            <origin xyz="0.0 0.0 0.015" rpy="0 0 0"/>
 			      <geometry>
-				    <mesh filename="package://sef_roboter_support/meshes/sr25/visual/sr25_base_axis.stl" />
+            <mesh filename="package://sef_roboter_support/meshes/sr25/visual/base_link.stl" />
 			      </geometry>
             <material name="grey"/>
 		      </visual>
 		      <collision>
 			      <origin xyz="0.0 -0.001694 0.042616" rpy="0 0 0"/>
 			      <geometry>
-				    <mesh filename="package://sef_roboter_support/meshes/sr25/collision/sr25_base_axis.stl"  />
+            <mesh filename="package://sef_roboter_support/meshes/sr25/collision/base_link.stl"  />
 			      </geometry>
 			      <material name="yellow"/>
 		      </collision>
@@ -33,13 +33,13 @@
 	      <link name="${prefix}link_1">
 		      <visual>
 			      <geometry>
-				    <mesh filename="package://sef_roboter_support/meshes/sr25/visual/sr25_axis_1.stl"  />
+            <mesh filename="package://sef_roboter_support/meshes/sr25/visual/link_1.stl"  />
 			      </geometry>
             <material name="grey"/>
 		      </visual>
 		      <collision>
 			      <geometry>
-				    <mesh filename="package://sef_roboter_support/meshes/sr25/collision/sr25_axis_1.stl"  />
+            <mesh filename="package://sef_roboter_support/meshes/sr25/collision/link_1.stl"  />
 			      </geometry>
 			      <material name="yellow" />
 			         
@@ -58,13 +58,13 @@
 	      <link name="${prefix}link_2">
 		      <visual>
 			      <geometry>
-				    <mesh filename="package://sef_roboter_support/meshes/sr25/visual/sr25_axis_2.stl"  />
+            <mesh filename="package://sef_roboter_support/meshes/sr25/visual/link_2.stl"  />
 			      </geometry>
 			      <material name="sef_yellow" />			         
 		      </visual>
 		      <collision>
 			      <geometry>
-				    <mesh filename="package://sef_roboter_support/meshes/sr25/collision/sr25_axis_2.stl"  />
+            <mesh filename="package://sef_roboter_support/meshes/sr25/collision/link_2.stl"  />
 			      </geometry>
 			      <material name="yellow" />
 			         
@@ -83,13 +83,13 @@
 	      <link name="${prefix}link_3">
 		      <visual>
 			      <geometry>
-				    <mesh filename="package://sef_roboter_support/meshes/sr25/visual/sr25_axis_3.stl" />
+            <mesh filename="package://sef_roboter_support/meshes/sr25/visual/link_3.stl" />
 			      </geometry>
             <material name="grey" />
 		      </visual>
 		      <collision>
 			      <geometry>
-				    <mesh filename="package://sef_roboter_support/meshes/sr25/collision/sr25_axis_3.stl" />
+            <mesh filename="package://sef_roboter_support/meshes/sr25/collision/link_3.stl" />
 			      </geometry>
 			      <material name="yellow" />
 			         
@@ -108,13 +108,13 @@
 	      <link name="${prefix}link_4">
 		      <visual>
 			      <geometry>
-				    <mesh filename="package://sef_roboter_support/meshes/sr25/visual/sr25_axis_4.stl" />
+            <mesh filename="package://sef_roboter_support/meshes/sr25/visual/link_4.stl" />
 			      </geometry>
 			      <material name="sef_yellow" />			         
 		      </visual>
 		      <collision>
 			      <geometry>
-				    <mesh filename="package://sef_roboter_support/meshes/sr25/collision/sr25_axis_4.stl" />
+            <mesh filename="package://sef_roboter_support/meshes/sr25/collision/link_4.stl" />
 			      </geometry>
 			      <material name="yellow" />
 			         
@@ -132,13 +132,13 @@
 	      <link name="${prefix}link_5">
 		      <visual>
 			      <geometry>
-				    <mesh filename="package://sef_roboter_support/meshes/sr25/visual/sr25_axis_5.stl" />
+            <mesh filename="package://sef_roboter_support/meshes/sr25/visual/link_5.stl" />
 			      </geometry>
 			      <material name="sef_yellow" />			         
 		      </visual>
 		      <collision>
 			      <geometry>
-				    <mesh filename="package://sef_roboter_support/meshes/sr25/collision/sr25_axis_5.stl" />
+            <mesh filename="package://sef_roboter_support/meshes/sr25/collision/link_5.stl" />
 			      </geometry>
 			      <material name="yellow" />
 			         
@@ -153,16 +153,16 @@
 		      </inertial>
 	      </link>
 	      
-	      <link name="${prefix}link_tool">
+        <link name="${prefix}link_6">
 		      <visual>
 			      <geometry>
-				    <mesh filename="package://sef_roboter_support/meshes/sr25/visual/sr25_axis_tool.stl" />
+            <mesh filename="package://sef_roboter_support/meshes/sr25/visual/link_6.stl" />
 			      </geometry>
             <material name="grey" />
 		      </visual>
 		      <collision>
 			      <geometry>
-				    <mesh filename="package://sef_roboter_support/meshes/sr25/collision/sr25_axis_tool.stl" />
+            <mesh filename="package://sef_roboter_support/meshes/sr25/collision/link_6.stl" />
 			      </geometry>
 			      <material name="yellow" />
 			         
@@ -176,69 +176,75 @@
 				  izz="0.001"/>
 		      </inertial>
 	      </link>
-	      
-	      <!-- end of link list -->
-	     
+
+        <link name="${prefix}tool0"/>
+        <!-- end of link list -->
+
 	      <!-- joint list -->
 	      <joint name="fixed" type="fixed">
-			<parent link="world"/>
-			<child link="base_link"/>			
+          <parent link="world"/>
+          <child link="base_link"/>
 	      </joint>
 	         
 	      <joint name="${prefix}joint_1" type="revolute">
-			<parent link="${prefix}base_link"/>
-			<child link="${prefix}link_1"/>
-			<origin xyz="0 0 0.075738" rpy="1.5708 0 -1.5745"/>
-			<axis xyz="0 -1 0" />
-			<limit lower="-2.8" upper="2.8" effort="10000" velocity="1" />			
- 			<dynamics damping="0.7" friction="100"/> 
+          <parent link="${prefix}base_link"/>
+          <child link="${prefix}link_1"/>
+          <origin xyz="0 0 0.075738" rpy="1.5708 0 -1.5745"/>
+          <axis xyz="0 -1 0" />
+          <limit lower="-2.8" upper="2.8" effort="10000" velocity="1" />
+          <dynamics damping="0.7" friction="100"/>
 	      </joint>
 	      
 	      <joint name="${prefix}joint_2" type="revolute">
-			<parent link="${prefix}link_1"/>
-			<child link="${prefix}link_2"/>
-			<origin xyz="0 0.24264 -0.29599" rpy="1.5687 0 0"/>
-			<axis xyz="-1 0 0" />
-                        <limit lower="-0.5" upper="1.5" effort="10000" velocity="1" />
-			<dynamics damping="0.7" friction="100"/> 
+          <parent link="${prefix}link_1"/>
+          <child link="${prefix}link_2"/>
+          <origin xyz="0 0.24264 -0.29599" rpy="1.5687 0 0"/>
+          <axis xyz="-1 0 0" />
+          <limit lower="-0.5" upper="1.5" effort="10000" velocity="1" />
+          <dynamics damping="0.7" friction="100"/>
 	      </joint>
 	      
 	      <joint name="${prefix}joint_3" type="revolute">
-			<parent link="${prefix}link_2"/>
-			<child link="${prefix}link_3"/>
-			<origin xyz="0 0 -0.79724" rpy="0.005529 0 0"/>
-			<axis xyz="-1 0 0" />
-                        <limit lower="-1.5" upper="0.5" effort="10000" velocity="1" />
-		        <dynamics damping="0.7" friction="100"/> 
+          <parent link="${prefix}link_2"/>
+          <child link="${prefix}link_3"/>
+          <origin xyz="0 0 -0.79724" rpy="0.005529 0 0"/>
+          <axis xyz="-1 0 0" />
+          <limit lower="-1.5" upper="0.5" effort="10000" velocity="1" />
+          <dynamics damping="0.7" friction="100"/>
 	      </joint>
 	      
 	      <joint name="${prefix}joint_4" type="revolute">
-			<parent link="${prefix}link_3"/>
-			<child link="${prefix}link_4"/>
-			<origin xyz="0 -0.15811 0" rpy="0 0.0014787 0"/>
-			<axis xyz="0 1 0" />
-                        <limit lower="-3" upper="3" effort="10000" velocity="1" />
-			<dynamics damping="0.7" friction="100"/>
-              </joint>
+          <parent link="${prefix}link_3"/>
+          <child link="${prefix}link_4"/>
+          <origin xyz="0 -0.15811 0" rpy="0 0.0014787 0"/>
+          <axis xyz="0 1 0" />
+          <limit lower="-3" upper="3" effort="10000" velocity="1" />
+          <dynamics damping="0.7" friction="100"/>
+        </joint>
 	      
 	      <joint name="${prefix}joint_5" type="revolute">
-			<parent link="${prefix}link_4"/>
-			<child link="${prefix}link_5"/>
-			<origin xyz="0 -0.58433 0" rpy="0 0 -0.033693"/>
-			<axis xyz="0 0 1" />
-                        <limit lower="-1.6" upper="1.6" effort="10000" velocity="1" />
-			<dynamics damping="0.7" friction="100"/>
-              </joint>
+          <parent link="${prefix}link_4"/>
+          <child link="${prefix}link_5"/>
+          <origin xyz="0 -0.58433 0" rpy="0 0 -0.033693"/>
+          <axis xyz="0 0 1" />
+          <limit lower="-1.6" upper="1.6" effort="10000" velocity="1" />
+          <dynamics damping="0.7" friction="100"/>
+        </joint>
 	      
 	      <joint name="${prefix}joint_6" type="revolute">
-			<parent link="${prefix}link_5"/>
-			<child link="${prefix}link_tool"/>
-			<origin xyz="0 -0.164051291252016 -0.00548103448275694" rpy="-1.5707963267949 0 3.14159265358979"/>
-			<axis xyz="0 0 -1 " />
-			<limit lower="-2.5" upper="2.5" effort="100" velocity="1" />
-			<dynamics damping="0.7" friction="100"/>
-              </joint>
+          <parent link="${prefix}link_5"/>
+          <child link="${prefix}link_6"/>
+          <origin xyz="0 -0.164051291252016 -0.00548103448275694" rpy="-1.5707963267949 0 3.14159265358979"/>
+          <axis xyz="0 0 -1 " />
+          <limit lower="-2.5" upper="2.5" effort="100" velocity="1" />
+          <dynamics damping="0.7" friction="100"/>
+        </joint>
 	      
+        <joint name="${prefix}joint_6-tool0" type="fixed">
+          <parent link="${prefix}link_6"/>
+          <child link="${prefix}tool0"/>
+          <origin xyz="0 0 0" rpy="0 -1.57 -1.57"/>
+        </joint>
 	      
 	      <!-- end of joint list -->  
 	      
