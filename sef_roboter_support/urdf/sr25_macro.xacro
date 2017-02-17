@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:macro name="sef_roboter" params="prefix">
-    <link name="${prefix}origin"/>
+    <link name="world"/>
     <link name="${prefix}base_link">
       <visual>
         <origin xyz="0.0 0.0 0.015" rpy="0 0 0"/>
@@ -183,7 +183,7 @@
 
     <!-- joint list -->
     <joint name="${prefix}joint_orig" type="fixed">
-      <parent link="${prefix}origin"/>
+      <parent link="world"/>
       <child link="${prefix}base_link"/>
     </joint>
 

@@ -11,7 +11,7 @@
 
   <!-- Base Link -->
   <gazebo reference="base_link">
-    <material>Gazebo/Grey</material>
+    <material>Gazebo/Grey</material>    
   </gazebo>
   
   <!-- Link1 -->
