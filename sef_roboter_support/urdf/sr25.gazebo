@@ -40,7 +40,7 @@
   </gazebo>
   
   <!-- Link6 -->
-  <gazebo reference="link_tool">
+  <gazebo reference="link_6">
     <material>Gazebo/Grey</material>
   </gazebo>
   

@@ -1,254 +1,239 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
-	<xacro:macro name="sef_roboter" params="prefix">
-	      <!-- link list -->
-	      <link name = "world"/>
-	    
-	      <link name="${prefix}base_link">
-		      <visual>
-            <origin xyz="0.0 0.0 0.015" rpy="0 0 0"/>
-			      <geometry>
-            <mesh filename="package://sef_roboter_support/meshes/sr25/visual/base_link.stl" />
-			      </geometry>
-            <material name="grey"/>
-		      </visual>
-		      <collision>
-			      <origin xyz="0.0 -0.001694 0.042616" rpy="0 0 0"/>
-			      <geometry>
-            <mesh filename="package://sef_roboter_support/meshes/sr25/collision/base_link.stl"  />
-			      </geometry>
-			      <material name="yellow"/>
-		      </collision>
+  <xacro:macro name="sef_roboter" params="prefix">
+    <link name="${prefix}base_link">
+      <visual>
+        <origin xyz="0.0 0.0 0.015" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://sef_roboter_support/meshes/sr25/visual/base_link.stl" />
+        </geometry>
+        <material name="grey"/>
+      </visual>
+
+      <collision>
+          <origin xyz="0.0 -0.001694 0.042616" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="package://sef_roboter_support/meshes/sr25/collision/base_link.stl"  />
+        </geometry>
+        <material name="yellow"/>
+      </collision>
+    </link>
+	      
+    <link name="${prefix}link_1">
+      <visual>
+        <geometry>
+          <mesh filename="package://sef_roboter_support/meshes/sr25/visual/link_1.stl"  />
+        </geometry>
+        <material name="grey"/>
+      </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://sef_roboter_support/meshes/sr25/collision/link_1.stl"  />
+        </geometry>
+        <material name="yellow" />
+      </collision>
+	      
+      <inertial>
+        <origin xyz="0.034335 0.177684 -0.134564" rpy="0 0 0"/>
+          <mass value="100"/>
+          <inertia
+            ixx="0.681" ixy="-0.024" ixz="0.053"
+            iyy="0.713" iyz="0.160"
+            izz="0.351"/>
+          </inertial>
+    </link>
+	      
+    <link name="${prefix}link_2">
+      <visual>
+        <geometry>
+          <mesh filename="package://sef_roboter_support/meshes/sr25/visual/link_2.stl"  />
+        </geometry>
+        <material name="sef_yellow" />
+      </visual>
+      <collision>
+        <geometry>
+          <mesh filename="package://sef_roboter_support/meshes/sr25/collision/link_2.stl"  />
+        </geometry>
+        <material name="yellow" />
+      </collision>
 		      
-		      <inertial>
-			      <origin xyz="0.0 -0.001694 0.042616" rpy="0 0 0"/>
-			      <mass value="100"/>	
-			      <inertia
-				  ixx="0.723" ixy="0.0" ixz="0.0"
-				  iyy="0.709" iyz="0.003"
-				  izz="1.346"/>
+      <inertial>
+        <origin xyz="0.194024 -0.000727 -0.358696" rpy="0 0 0"/>
+          <mass value="60"/>
+          <inertia
+            ixx="2.573" ixy="-0.001" ixz="-0.058"
+            iyy="2.564" iyz="0.007"
+            izz="0.231"/>
 		      </inertial>
-	      </link>
+    </link>
 	      
-	      <link name="${prefix}link_1">
-		      <visual>
-			      <geometry>
-            <mesh filename="package://sef_roboter_support/meshes/sr25/visual/link_1.stl"  />
-			      </geometry>
-            <material name="grey"/>
-		      </visual>
-		      <collision>
-			      <geometry>
-            <mesh filename="package://sef_roboter_support/meshes/sr25/collision/link_1.stl"  />
-			      </geometry>
-			      <material name="yellow" />
-			         
-		      </collision>
+    <link name="${prefix}link_3">
+      <visual>
+        <geometry>
+          <mesh filename="package://sef_roboter_support/meshes/sr25/visual/link_3.stl" />
+        </geometry>
+        <material name="grey" />
+      </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://sef_roboter_support/meshes/sr25/collision/link_3.stl" />
+        </geometry>
+        <material name="yellow" />
+      </collision>
+
+      <inertial>
+        <origin xyz="0.002004 0.095949 0.000394" rpy="0 0 0"/>
+          <mass value="60"/>
+          <inertia
+            ixx="0.617" ixy="0.009" ixz="0.001"
+            iyy="0.151" iyz="-0.009"
+            izz="0.571"/>
+		      </inertial>		      
+    </link>
 	      
-		      <inertial>
-			      <origin xyz="0.034335 0.177684 -0.134564" rpy="0 0 0"/>
-			      <mass value="100"/>	
-			      <inertia
-				  ixx="0.681" ixy="-0.024" ixz="0.053"
-				  iyy="0.713" iyz="0.160"
-				  izz="0.351"/>
-		      </inertial>
-	      </link>
-	      
-	      <link name="${prefix}link_2">
-		      <visual>
-			      <geometry>
-            <mesh filename="package://sef_roboter_support/meshes/sr25/visual/link_2.stl"  />
-			      </geometry>
-			      <material name="sef_yellow" />			         
-		      </visual>
-		      <collision>
-			      <geometry>
-            <mesh filename="package://sef_roboter_support/meshes/sr25/collision/link_2.stl"  />
-			      </geometry>
-			      <material name="yellow" />
-			         
-		      </collision>
-		      
-		      <inertial>
-			      <origin xyz="0.194024 -0.000727 -0.358696" rpy="0 0 0"/>
-			      <mass value="60"/>	
-			      <inertia
-				  ixx="2.573" ixy="-0.001" ixz="-0.058"
-				  iyy="2.564" iyz="0.007"
-				  izz="0.231"/>
-		      </inertial>
-	      </link>
-	      
-	      <link name="${prefix}link_3">
-		      <visual>
-			      <geometry>
-            <mesh filename="package://sef_roboter_support/meshes/sr25/visual/link_3.stl" />
-			      </geometry>
-            <material name="grey" />
-		      </visual>
-		      <collision>
-			      <geometry>
-            <mesh filename="package://sef_roboter_support/meshes/sr25/collision/link_3.stl" />
-			      </geometry>
-			      <material name="yellow" />
-			         
-		      </collision>
-		      <inertial>
-			      <origin xyz="0.002004 0.095949 0.000394" rpy="0 0 0"/>
-			      <mass value="60"/>	
-			      <inertia
-				  ixx="0.617" ixy="0.009" ixz="0.001"
-				  iyy="0.151" iyz="-0.009"
-				  izz="0.571"/>
-		      </inertial>
-		      
-	      </link>
-	      
-	      <link name="${prefix}link_4">
-		      <visual>
-			      <geometry>
-            <mesh filename="package://sef_roboter_support/meshes/sr25/visual/link_4.stl" />
-			      </geometry>
-			      <material name="sef_yellow" />			         
-		      </visual>
-		      <collision>
-			      <geometry>
-            <mesh filename="package://sef_roboter_support/meshes/sr25/collision/link_4.stl" />
-			      </geometry>
-			      <material name="yellow" />
-			         
-		      </collision>
-		      <inertial>
-			      <origin xyz="0.000011 -0.329729 -0.000248" rpy="0 0 0"/>
-			      <mass value="40"/>	
-			      <inertia
+    <link name="${prefix}link_4">
+      <visual>
+        <geometry>
+          <mesh filename="package://sef_roboter_support/meshes/sr25/visual/link_4.stl" />
+        </geometry>
+        <material name="sef_yellow" />
+      </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://sef_roboter_support/meshes/sr25/collision/link_4.stl" />
+        </geometry>
+        <material name="yellow" />
+      </collision>
+
+      <inertial>
+        <origin xyz="0.000011 -0.329729 -0.000248" rpy="0 0 0"/>
+        <mass value="40"/>
+        <inertia
 				  ixx="0.233" ixy="0.0" ixz="0.0"
 				  iyy="0.010" iyz="0.0"
 				  izz="0.233"/>
-		      </inertial>
-	      </link>
+        </inertial>
+    </link>
 	      
-	      <link name="${prefix}link_5">
-		      <visual>
-			      <geometry>
-            <mesh filename="package://sef_roboter_support/meshes/sr25/visual/link_5.stl" />
-			      </geometry>
-			      <material name="sef_yellow" />			         
-		      </visual>
-		      <collision>
-			      <geometry>
-            <mesh filename="package://sef_roboter_support/meshes/sr25/collision/link_5.stl" />
-			      </geometry>
-			      <material name="yellow" />
-			         
-		      </collision>
-		      <inertial>
-			      <origin xyz="-0.000029 -0.074224 -0.055689" rpy="0 0 0"/>
-			      <mass value="10"/>	
-			      <inertia
+    <link name="${prefix}link_5">
+      <visual>
+        <geometry>
+          <mesh filename="package://sef_roboter_support/meshes/sr25/visual/link_5.stl" />
+        </geometry>
+        <material name="sef_yellow" />
+      </visual>
+
+      <collision>
+        <geometry>
+          <mesh filename="package://sef_roboter_support/meshes/sr25/collision/link_5.stl" />
+        </geometry>
+        <material name="yellow" />
+      </collision>
+
+      <inertial>
+        <origin xyz="-0.000029 -0.074224 -0.055689" rpy="0 0 0"/>
+        <mass value="10"/>
+        <inertia
 				  ixx="0.015" ixy="0.0" ixz="0.0"
 				  iyy="0.009" iyz="0.004"
 				  izz="0.011"/>
-		      </inertial>
-	      </link>
+        </inertial>
+    </link>
 	      
-        <link name="${prefix}link_6">
-		      <visual>
-			      <geometry>
-            <mesh filename="package://sef_roboter_support/meshes/sr25/visual/link_6.stl" />
-			      </geometry>
-            <material name="grey" />
-		      </visual>
-		      <collision>
-			      <geometry>
-            <mesh filename="package://sef_roboter_support/meshes/sr25/collision/link_6.stl" />
-			      </geometry>
-			      <material name="yellow" />
-			         
-		      </collision>
-		      <inertial>
-			      <origin xyz="0.0 -0.000199 0.017661" rpy="0 0 0"/>
-			      <mass value="5"/>	
-			      <inertia
-				  ixx="0.001" ixy="0.0" ixz="0.0"
-				  iyy="0.001" iyz="0.0"
-				  izz="0.001"/>
-		      </inertial>
-	      </link>
+    <link name="${prefix}link_6">
+      <visual>
+        <geometry>
+          <mesh filename="package://sef_roboter_support/meshes/sr25/visual/link_6.stl" />
+        </geometry>
+        <material name="grey" />
+      </visual>
 
-        <link name="${prefix}tool0"/>
-        <!-- end of link list -->
+      <collision>
+        <geometry>
+          <mesh filename="package://sef_roboter_support/meshes/sr25/collision/link_6.stl" />
+        </geometry>
+        <material name="yellow" />
+      </collision>
 
-	      <!-- joint list -->
-	      <joint name="fixed" type="fixed">
-          <parent link="world"/>
-          <child link="base_link"/>
-	      </joint>
-	         
-	      <joint name="${prefix}joint_1" type="revolute">
+      <inertial>
+        <origin xyz="0.0 -0.000199 0.017661" rpy="0 0 0"/>
+        <mass value="5"/>
+          <inertia
+            ixx="0.001" ixy="0.0" ixz="0.0"
+            iyy="0.001" iyz="0.0"
+            izz="0.001"/>
+          </inertial>
+    </link>
+
+    <link name="${prefix}tool0"/>
+    <!-- end of link list -->
+
+    <!-- joint list -->
+    <joint name="${prefix}joint_1" type="revolute">
 			<parent link="${prefix}base_link"/>
 			<child link="${prefix}link_1"/>
 			<origin xyz="0 0 0.075738" rpy="1.5708 0 -1.5745"/>
 			<axis xyz="0 -1 0" />
 			<limit lower="-2.8" upper="2.8" effort="10000" velocity="1" />			
- 			<dynamics damping="0.7" friction="100"/> 
-	      </joint>
+      <dynamics damping="0.7" friction="100"/>
+    </joint>
 	      
-	      <joint name="${prefix}joint_2" type="revolute">
+    <joint name="${prefix}joint_2" type="revolute">
 			<parent link="${prefix}link_1"/>
 			<child link="${prefix}link_2"/>
 			<origin xyz="0 0.24264 -0.29599" rpy="1.5687 0 0"/>
 			<axis xyz="-1 0 0" />
-                        <limit lower="-0.5" upper="1.5" effort="10000" velocity="1" />
+      <limit lower="-0.5" upper="1.5" effort="10000" velocity="1" />
 			<dynamics damping="0.7" friction="100"/> 
-	      </joint>
+    </joint>
 	      
-	      <joint name="${prefix}joint_3" type="revolute">
+    <joint name="${prefix}joint_3" type="revolute">
 			<parent link="${prefix}link_2"/>
 			<child link="${prefix}link_3"/>
 			<origin xyz="0 0 -0.79724" rpy="0.005529 0 0"/>
 			<axis xyz="-1 0 0" />
-                        <limit lower="-1.5" upper="0.5" effort="10000" velocity="1" />
-		        <dynamics damping="0.7" friction="100"/> 
-	      </joint>
+      <limit lower="-1.5" upper="0.5" effort="10000" velocity="1" />
+      <dynamics damping="0.7" friction="100"/>
+    </joint>
 	      
-	      <joint name="${prefix}joint_4" type="revolute">
+    <joint name="${prefix}joint_4" type="revolute">
 			<parent link="${prefix}link_3"/>
 			<child link="${prefix}link_4"/>
 			<origin xyz="0 -0.15811 0" rpy="0 0.0014787 0"/>
 			<axis xyz="0 1 0" />
-                        <limit lower="-3" upper="3" effort="10000" velocity="1" />
-			<dynamics damping="0.7" friction="100"/>
-              </joint>
+      <limit lower="-3" upper="3" effort="10000" velocity="1" />
+      <dynamics damping="0.7" friction="100"/>
+    </joint>
 	      
-	      <joint name="${prefix}joint_5" type="revolute">
+    <joint name="${prefix}joint_5" type="revolute">
 			<parent link="${prefix}link_4"/>
 			<child link="${prefix}link_5"/>
 			<origin xyz="0 -0.58433 0" rpy="0 0 -0.033693"/>
 			<axis xyz="0 0 1" />
-                        <limit lower="-1.6" upper="1.6" effort="10000" velocity="1" />
+      <limit lower="-1.6" upper="1.6" effort="10000" velocity="1" />
 			<dynamics damping="0.7" friction="100"/>
-              </joint>
+    </joint>
 	      
-	      <joint name="${prefix}joint_6" type="revolute">
+    <joint name="${prefix}joint_6" type="revolute">
 			<parent link="${prefix}link_5"/>
-			<child link="${prefix}link_tool"/>
-			<origin xyz="0 -0.164051291252016 -0.00548103448275694" rpy="-1.5707963267949 0 3.14159265358979"/>
+      <child link="${prefix}link_6"/>
+      <origin xyz="0 -0.16405 -0.00548" rpy="-1.5707 0 3.1415"/>
 			<axis xyz="0 0 -1 " />
 			<limit lower="-2.5" upper="2.5" effort="100" velocity="1" />
-			<dynamics damping="0.7" friction="100"/>
-              </joint>
+      <dynamics damping="0.7" friction="100"/>
+    </joint>
 	      
-        <joint name="${prefix}joint_6-tool0" type="fixed">
-          <parent link="${prefix}link_6"/>
-          <child link="${prefix}tool0"/>
-          <origin xyz="0 0 0" rpy="0 -1.57 -1.57"/>
-        </joint>
+    <joint name="${prefix}joint_6-tool0" type="fixed">
+      <parent link="${prefix}link_6"/>
+      <child link="${prefix}tool0"/>
+      <origin xyz="0 0 0" rpy="0 0 -1.57"/>
+    </joint>
+    <!-- end of joint list -->
 	      
-	      <!-- end of joint list -->  
-	      
-	       <transmission name="tran_1">
+    <transmission name="tran_1">
 			<type>transmission_interface/SimpleTransmission</type>
 			<joint name="joint_1">
 			  <hardwareInterface>VelocityJointInterface</hardwareInterface>
@@ -257,10 +242,10 @@
 			  <hardwareInterface>VelocityJointInterface</hardwareInterface>
 			  <mechanicalReduction>80</mechanicalReduction>
 			</actuator>
-	      </transmission>
+    </transmission>
 	      
-	      <transmission name="tran_2">
-			<type>transmission_interface/SimpleTransmission</type>
+    <transmission name="tran_2">
+      <type>transmission_interface/SimpleTransmission</type>
 			<joint name="joint_2">
 			  <hardwareInterface>VelocityJointInterface</hardwareInterface>
 			</joint>
@@ -268,9 +253,9 @@
 			  <hardwareInterface>VelocityJointInterface</hardwareInterface>
 			  <mechanicalReduction>120</mechanicalReduction>
 			</actuator>
-	      </transmission>
+    </transmission>
 	      
-	      <transmission name="tran_3">
+    <transmission name="tran_3">
 			<type>transmission_interface/SimpleTransmission</type>
 			<joint name="joint_3">
 			  <hardwareInterface>VelocityJointInterface</hardwareInterface>
@@ -279,9 +264,9 @@
 			  <hardwareInterface>VelocityJointInterface</hardwareInterface>
 			  <mechanicalReduction>108</mechanicalReduction>
 			</actuator>
-	      </transmission>
+    </transmission>
 	      
-	      <transmission name="tran_4">
+    <transmission name="tran_4">
 			<type>transmission_interface/SimpleTransmission</type>
 			<joint name="joint_4">
 			  <hardwareInterface>VelocityJointInterface</hardwareInterface>
@@ -290,9 +275,9 @@
 			  <hardwareInterface>VelocityJointInterface</hardwareInterface>
 			  <mechanicalReduction>76.5</mechanicalReduction>
 			</actuator>
-	      </transmission>
+    </transmission>
 	      
-	      <transmission name="tran_5">
+    <transmission name="tran_5">
 			<type>transmission_interface/SimpleTransmission</type>
 			<joint name="joint_5">
 			  <hardwareInterface>VelocityJointInterface</hardwareInterface>
@@ -301,9 +286,9 @@
 			  <hardwareInterface>VelocityJointInterface</hardwareInterface>
 			  <mechanicalReduction>100.5</mechanicalReduction>
 			</actuator>
-	      </transmission>
+    </transmission>
 	      
-	      <transmission name="tran_6">
+    <transmission name="tran_6">
 			<type>transmission_interface/SimpleTransmission</type>
 			<joint name="joint_6">
 			  <hardwareInterface>VelocityJointInterface</hardwareInterface>
@@ -312,7 +297,7 @@
 			  <hardwareInterface>VelocityJointInterface</hardwareInterface>
 			  <mechanicalReduction>92.2</mechanicalReduction>
 			</actuator>
-	      </transmission>
+    </transmission>
 	      
 	</xacro:macro>
 </robot>

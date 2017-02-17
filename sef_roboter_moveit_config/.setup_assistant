@@ -3,6 +3,8 @@ moveit_setup_assistant_config:
     package: sef_roboter_support
     relative_path: urdf/sr25.urdf
   SRDF:
-    relative_path: config/sef_roboter_sr25.srdf
+    relative_path: config/sef_roboter.srdf
   CONFIG:
-    generated_timestamp: 1421149487
+    author_name: durovsky
+    author_email: durovsky987@gmail.com
+    generated_timestamp: 1487345332

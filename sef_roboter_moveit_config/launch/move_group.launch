@@ -1,8 +1,4 @@
-<?xml version="1.0"?>
 <launch>
-
-  <!-- Passed argument to distinguish between real and simulated robot -->
-  <arg name="real_robot"/>
 
   <include file="$(find sef_roboter_moveit_config)/launch/planning_context.launch" />
 
@@ -19,7 +15,7 @@
 
   <!-- move_group settings -->
   <arg name="allow_trajectory_execution" default="true"/>
-  <arg name="fake_execution" default="true"/>
+  <arg name="fake_execution" default="false"/>
   <arg name="max_safe_path_cost" default="1"/>
   <arg name="jiggle_fraction" default="0.05" />
   <arg name="publish_monitored_planning_scene" default="true"/>
@@ -34,7 +30,6 @@
     <arg name="moveit_manage_controllers" value="true" />
     <arg name="moveit_controller_manager" value="sef_roboter" unless="$(arg fake_execution)"/>
     <arg name="moveit_controller_manager" value="fake" if="$(arg fake_execution)"/>
-    <arg name="real_robot" value="$(arg real_robot)"/>
   </include>
 
   <!-- Sensors Functionality -->
@@ -44,8 +39,6 @@
 
   <!-- Start the actual move_group node/action server -->
   <node name="move_group" launch-prefix="$(arg launch_prefix)" pkg="moveit_ros_move_group" type="move_group" respawn="false" output="screen" args="$(arg command_args)">
-    <!--     Remap joint_state topic that is produced by the gazebo simulated robot -->
-    <remap from="/joint_states" to="/sef_roboter/joint_states" />
     <!-- Set the display variable, in case OpenGL code is used internally -->
     <env name="DISPLAY" value="$(optenv DISPLAY :0)" />
 
@@ -53,18 +46,21 @@
     <param name="max_safe_path_cost" value="$(arg max_safe_path_cost)"/>
     <param name="jiggle_fraction" value="$(arg jiggle_fraction)" />
 
-    <!-- MoveGroup capabilities to load -->
-    <param name="capabilities" value="move_group/MoveGroupCartesianPathService
-				      move_group/MoveGroupExecuteService
-				      move_group/MoveGroupKinematicsService
-				      move_group/MoveGroupMoveAction
-				      move_group/MoveGroupPickPlaceAction
-				      move_group/MoveGroupPlanService
-				      move_group/MoveGroupQueryPlannersService
-				      move_group/MoveGroupStateValidationService
-				      move_group/MoveGroupGetPlanningSceneService
-				      move_group/ClearOctomapService
-				      " />
+    <!-- load these non-default MoveGroup capabilities -->
+    <!--
+    <param name="capabilities" value="
+                  a_package/AwsomeMotionPlanningCapability
+                  another_package/GraspPlanningPipeline
+                  " />
+    -->
+
+    <!-- inhibit these default MoveGroup capabilities -->
+    <!--
+    <param name="disable_capabilities" value="
+                  move_group/MoveGroupKinematicsService
+                  move_group/ClearOctomapService
+                  " />
+    -->
 
     <!-- Publish the planning scene of the physical robot so that rviz plugin can know actual robot -->
     <param name="planning_scene_monitor/publish_planning_scene" value="$(arg publish_monitored_planning_scene)" />
