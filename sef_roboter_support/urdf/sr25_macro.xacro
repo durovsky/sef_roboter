@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:macro name="sef_roboter" params="prefix">
+    <link name="${prefix}origin"/>
     <link name="${prefix}base_link">
       <visual>
         <origin xyz="0.0 0.0 0.015" rpy="0 0 0"/>
@@ -17,6 +18,15 @@
         </geometry>
         <material name="yellow"/>
       </collision>
+
+      <inertial>
+        <origin xyz="0.0 -0.001694 0.042616" rpy="0 0 0"/>
+        <mass value="100"/>
+        <inertia
+          ixx="0.723" ixy="0.0" ixz="0.0"
+          iyy="0.709" iyz="0.003"
+          izz="1.346"/>
+        </inertial>
     </link>
 	      
     <link name="${prefix}link_1">
@@ -172,6 +182,11 @@
     <!-- end of link list -->
 
     <!-- joint list -->
+    <joint name="${prefix}joint_orig" type="fixed">
+      <parent link="${prefix}origin"/>
+      <child link="${prefix}base_link"/>
+    </joint>
+
     <joint name="${prefix}joint_1" type="revolute">
 			<parent link="${prefix}base_link"/>
 			<child link="${prefix}link_1"/>

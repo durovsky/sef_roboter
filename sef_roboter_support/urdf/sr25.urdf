@@ -68,10 +68,11 @@
     <material>Gazebo/Yellow</material>
   </gazebo>
   <!-- Link6 -->
-  <gazebo reference="link_tool">
+  <gazebo reference="link_6">
     <material>Gazebo/Grey</material>
   </gazebo>
   <!-- Import Model -->
+  <link name="origin"/>
   <link name="base_link">
     <visual>
       <origin rpy="0 0 0" xyz="0.0 0.0 0.015"/>
@@ -87,6 +88,11 @@
       </geometry>
       <material name="yellow"/>
     </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0.0 -0.001694 0.042616"/>
+      <mass value="100"/>
+      <inertia ixx="0.723" ixy="0.0" ixz="0.0" iyy="0.709" iyz="0.003" izz="1.346"/>
+    </inertial>
   </link>
   <link name="link_1">
     <visual>
@@ -205,6 +211,10 @@
   <link name="tool0"/>
   <!-- end of link list -->
   <!-- joint list -->
+  <joint name="joint_orig" type="fixed">
+    <parent link="origin"/>
+    <child link="base_link"/>
+  </joint>
   <joint name="joint_1" type="revolute">
     <parent link="base_link"/>
     <child link="link_1"/>
