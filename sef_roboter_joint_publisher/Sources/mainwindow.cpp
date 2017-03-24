@@ -59,14 +59,14 @@ MainWindow::MainWindow(ros::NodeHandle *nh, int mode) :
     {
         // Initialize publisher for simulation mode
         ROS_INFO("Initializing in simulation mode !");
-        pub_joint_trajectory = nh->advertise<trajectory_msgs::JointTrajectory > ("/sef_roboter/joints_controller/command", 1);
+        pub_joint_states = nh->advertise<sensor_msgs::JointState >("/sef_roboter/joint_states_goal",1);
         ui->label_mode->setText("<font color='green'>Gazebo Sim</font>");
     }
     else if(mode == REAL_ROBOT)
     {
         // Initialize publisher for real robot communication
         ROS_INFO("Initializing in real robot mode !");
-        pub_joint_trajectory = nh->advertise<trajectory_msgs::JointTrajectory > ("/sef_roboter/velocity_trajectory_controller/command", 1);
+        pub_joint_states = nh->advertise<sensor_msgs::JointState >("/sef_roboter/joint_states_goal",1);
         ui->label_mode->setText("<font color='red'>REAL ROBOT</font>");
 
         //Initialize service client for referencing purposes
@@ -118,92 +118,59 @@ void MainWindow::on_button_move_to_home_clicked()
 {
     ROS_INFO("Moving to Home Position");
 
-    trajectory_msgs::JointTrajectory arm_command;
-    trajectory_msgs::JointTrajectoryPoint desired_configuration;
+    sensor_msgs::JointState goal_state;
+    goal_state.header.stamp = ros::Time::now();
+    goal_state.header.frame_id = "base_link";
+    goal_state.position.resize(NUM_OF_JOINTS);
+    goal_state.position[0] = 0.0;
+    goal_state.position[1] = 0.0;
+    goal_state.position[2] = 0.0;
+    goal_state.position[3] = 0.0;
+    goal_state.position[4] = 0.0;
+    goal_state.position[5] = 0.0;
 
-    // Resize to 6 joints
-    desired_configuration.positions.resize(NUM_OF_JOINTS);
-    arm_command.joint_names.resize(NUM_OF_JOINTS);
-
-    std::stringstream joint_name;
-    for(int i = 0; i < NUM_OF_JOINTS; ++i)
-    {
-        joint_name.str("");
-        joint_name << "joint_" <<  (i + 1);
-        desired_configuration.positions[i] = 0.0;
-        arm_command.joint_names[i] = joint_name.str();
-    }
-
-    arm_command.header.stamp = ros::Time::now();
-    arm_command.header.frame_id = "base_link";
-    arm_command.points.resize(1);
-    arm_command.points[0] = desired_configuration;
-    arm_command.points[0].time_from_start = ros::Duration(HOMING_TIME);
-
-    // Publish homing trajectory
-    pub_joint_trajectory.publish(arm_command);
+    //Publish goal joint state
+    pub_joint_states.publish(goal_state);
 }
 
 void MainWindow::on_button_move_to_slider_goal_clicked()
 {
     ROS_INFO("Moving to Goal 1: [%f, %f, %f, %f, %f, %f]", slider_goals[0], slider_goals[1], slider_goals[2],
                                                            slider_goals[3], slider_goals[4], slider_goals[5]);
-    trajectory_msgs::JointTrajectory arm_command;
-    trajectory_msgs::JointTrajectoryPoint desired_configuration;
 
-    // Resize to 6 joints
-    desired_configuration.positions.resize(NUM_OF_JOINTS);
-    arm_command.joint_names.resize(NUM_OF_JOINTS);
+    sensor_msgs::JointState goal_state;
+    goal_state.header.stamp = ros::Time::now();
+    goal_state.header.frame_id = "base_link";
+    goal_state.position.resize(NUM_OF_JOINTS);
+    goal_state.position[0] = slider_goals[0];
+    goal_state.position[1] = slider_goals[1];
+    goal_state.position[2] = slider_goals[2];
+    goal_state.position[3] = slider_goals[3];
+    goal_state.position[4] = slider_goals[4];
+    goal_state.position[5] = slider_goals[5];
 
-
-    std::stringstream joint_name;
-    for(int i = 0; i < NUM_OF_JOINTS; ++i)
-    {
-        joint_name.str("");
-        joint_name << "joint_" <<  (i + 1);
-        desired_configuration.positions[i] = slider_goals[i];
-        arm_command.joint_names[i] = joint_name.str();
-    }
-
-    arm_command.header.stamp = ros::Time::now();
-    arm_command.header.frame_id = "base_link";
-    arm_command.points.resize(1);
-    arm_command.points[0] = desired_configuration;
-    arm_command.points[0].time_from_start = ros::Duration(slider_trajectory_duration);
-
-    // Publish homing trajectory
-    pub_joint_trajectory.publish(arm_command);
+    //Publish goal joint state
+    pub_joint_states.publish(goal_state);
 }
 
 void MainWindow::on_button_move_to_spinbox_goal_clicked()
 {
     ROS_INFO("Moving to Goal 2: [%f, %f, %f, %f, %f, %f]", spinbox_goals[0], spinbox_goals[1], spinbox_goals[2],
                                                            spinbox_goals[3], spinbox_goals[4], spinbox_goals[5]);
-    trajectory_msgs::JointTrajectory arm_command;
-    trajectory_msgs::JointTrajectoryPoint desired_configuration;
 
-    // Resize to 6 joints
-    desired_configuration.positions.resize(NUM_OF_JOINTS);
-    arm_command.joint_names.resize(NUM_OF_JOINTS);
+    sensor_msgs::JointState goal_state;
+    goal_state.header.stamp = ros::Time::now();
+    goal_state.header.frame_id = "base_link";
+    goal_state.position.resize(NUM_OF_JOINTS);
+    goal_state.position[0] = spinbox_goals[0];
+    goal_state.position[1] = spinbox_goals[1];
+    goal_state.position[2] = spinbox_goals[2];
+    goal_state.position[3] = spinbox_goals[3];
+    goal_state.position[4] = spinbox_goals[4];
+    goal_state.position[5] = spinbox_goals[5];
 
-
-    std::stringstream joint_name;
-    for(int i = 0; i < NUM_OF_JOINTS; ++i)
-    {
-        joint_name.str("");
-        joint_name << "joint_" <<  (i + 1);
-        desired_configuration.positions[i] = spinbox_goals[i];
-        arm_command.joint_names[i] = joint_name.str();
-    }
-
-    arm_command.header.stamp = ros::Time::now();
-    arm_command.header.frame_id = "base_link";
-    arm_command.points.resize(1);
-    arm_command.points[0] = desired_configuration;
-    arm_command.points[0].time_from_start = ros::Duration(spinbox_trajectory_duration);
-
-    // Publish homing trajectory
-    pub_joint_trajectory.publish(arm_command);
+    //Publish goal joint state
+    pub_joint_states.publish(goal_state);
 }
 
 void MainWindow::on_slider_joint_1_valueChanged(int value)

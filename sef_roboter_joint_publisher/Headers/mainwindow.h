@@ -40,7 +40,6 @@
 #include <QMainWindow>
 #include <ros/ros.h>
 #include <sensor_msgs/JointState.h>
-#include "trajectory_msgs/JointTrajectory.h"
 #include "sef_roboter_ros_control/reference_joint.h"
 
 namespace Ui {
@@ -90,6 +89,7 @@ private:
 
     ros::NodeHandle *nh;
     ros::Subscriber sub_joint_states;
+    ros::Publisher pub_joint_states;
     ros::Publisher pub_joint_trajectory;
     ros::ServiceClient srv_reference_joint_client;
 
