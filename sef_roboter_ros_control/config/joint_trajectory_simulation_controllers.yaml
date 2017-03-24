@@ -15,9 +15,9 @@ sef_roboter:
       - joint_5
       - joint_6
     gains:
-      joint_1: {p: 3.5, i: 0, d: 0, i_clamp_min: 0, i_clamp_max: 0}
-      joint_2: {p: 3.5, i: 0, d: 0, i_clamp_min: 0, i_clamp_max: 0}
-      joint_3: {p: 3.5, i: 0, d: 0, i_clamp_min: 0, i_clamp_max: 0}
-      joint_4: {p: 3.5, i: 0, d: 0, i_clamp_min: 0, i_clamp_max: 0}
-      joint_5: {p: 3.5, i: 0, d: 0, i_clamp_min: 0, i_clamp_max: 0}
-      joint_6: {p: 3.5, i: 0, d: 0, i_clamp_min: 0, i_clamp_max: 0}
+      joint_1: {p: 80, i: 0, d: 0, i_clamp_min: 0, i_clamp_max: 0}
+      joint_2: {p: 80, i: 0, d: 0, i_clamp_min: 0, i_clamp_max: 0}
+      joint_3: {p: 80, i: 0, d: 0, i_clamp_min: 0, i_clamp_max: 0}
+      joint_4: {p: 60, i: 0, d: 0, i_clamp_min: 0, i_clamp_max: 0}
+      joint_5: {p: 60, i: 0, d: 0, i_clamp_min: 0, i_clamp_max: 0}
+      joint_6: {p: 60, i: 0, d: 0, i_clamp_min: 0, i_clamp_max: 0}
