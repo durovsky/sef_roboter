@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<launch>
+
+  <!-- Demo Launch -->
+  <include file="$(find sef_roboter_moveit_config)/launch/demo.launch"/>
+
+  <!-- Run Tango Aligner -->
+  <node name="tango_tool0_aligner" pkg="sef_roboter_utils" type="tango_tool0_aligner" output="screen"/>
+
+  <!-- Run Button Plan & Execute -->
+  <node name="button_plan_execute" pkg="sef_roboter_utils" type="button_plan_execute" output="screen"/>
+
+</launch>

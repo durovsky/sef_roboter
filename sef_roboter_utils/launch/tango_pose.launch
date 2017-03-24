@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<launch>
+
+  <!-- Run Basic Rviz visualization -->
+  <include file="$(find sef_roboter_support)/launch/test_sr25.launch"/>
+
+  <!-- Run Tango Aligner -->
+  <node name="tango_tool0_aligner" pkg="sef_roboter_utils" type="tango_tool0_aligner" output="screen"/>
+
+</launch>

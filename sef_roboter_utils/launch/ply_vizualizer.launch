@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<launch>
+
+  <node name="read" pkg="point_cloud_io" type="read" output="screen">
+    <param name="file_path" value="/home/durovsky/catkin_ws/src/sef_roboter/sef_roboter_utils/pointclouds/point_cloud.ply"/>
+    <param name="topic" value="/tango_pointcloud2"/>
+    <param name="frame" value="/LenovoPhab2Pro"/>
+    <param name="rate" value="1.0"/>
+  </node>
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tango_utils)/config/octomapping.rviz" required="true"/>
+
+</launch>
