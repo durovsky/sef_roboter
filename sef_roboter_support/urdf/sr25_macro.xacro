@@ -2,6 +2,8 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:macro name="sef_roboter" params="prefix">
     <link name="world"/>
+    <link name="start_of_service"/>
+
     <link name="${prefix}base_link">
       <visual>
         <origin xyz="0.0 0.0 0.015" rpy="0 0 0"/>
@@ -185,6 +187,12 @@
     <joint name="${prefix}joint_orig" type="fixed">
       <parent link="world"/>
       <child link="${prefix}base_link"/>
+    </joint>
+
+    <joint name="${prefix}joint_start_of_service" type="fixed">
+      <parent link="world"/>
+      <child link="${prefix}start_of_service"/>
+      <origin xyz="0 0 0" rpy="0 0 1.5745"/>
     </joint>
 
     <joint name="${prefix}joint_1" type="revolute">

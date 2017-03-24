@@ -46,7 +46,6 @@
   <!-- Base Link -->
   <gazebo reference="base_link">
     <material>Gazebo/Grey</material>
-    <static>true</static>
   </gazebo>
   <!-- Link1 -->
   <gazebo reference="link_1">
@@ -74,6 +73,7 @@
   </gazebo>
   <!-- Import Model -->
   <link name="world"/>
+  <link name="start_of_service"/>
   <link name="base_link">
     <visual>
       <origin rpy="0 0 0" xyz="0.0 0.0 0.015"/>
@@ -215,6 +215,11 @@
   <joint name="joint_orig" type="fixed">
     <parent link="world"/>
     <child link="base_link"/>
+  </joint>
+  <joint name="joint_start_of_service" type="fixed">
+    <parent link="world"/>
+    <child link="start_of_service"/>
+    <origin rpy="0 0 1.5745" xyz="0 0 0"/>
   </joint>
   <joint name="joint_1" type="revolute">
     <parent link="base_link"/>
