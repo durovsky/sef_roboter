@@ -26,7 +26,7 @@
 
   <!-- Planning Functionality -->
   <include ns="move_group" file="$(find sef_roboter_moveit_config)/launch/planning_pipeline.launch.xml">
-    <arg name="pipeline" value="stomp" />
+    <arg name="pipeline" value="ompl" />
   </include>
 
   <!-- Trajectory Execution Functionality -->

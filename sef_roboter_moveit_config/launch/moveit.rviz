@@ -13,6 +13,7 @@ Panels:
         - /TF1
         - /TF1/Frames1
         - /Marker1
+        - /Marker2
       Splitter Ratio: 0.74256
     Tree Height: 332
   - Class: rviz/Help
@@ -140,7 +141,7 @@ Visualization Manager:
         Interactive Marker Size: 0
         Joint Violation Color: 255; 0; 255
         Planning Group: manipulator
-        Query Goal State: true
+        Query Goal State: false
         Query Start State: false
         Show Workspace: false
         Start State Alpha: 1
@@ -220,24 +221,28 @@ Visualization Manager:
         All Enabled: false
         base_link:
           Value: true
+        device:
+          Value: false
+        imu:
+          Value: false
         link_1:
-          Value: true
+          Value: false
         link_2:
-          Value: true
+          Value: false
         link_3:
-          Value: true
+          Value: false
         link_4:
-          Value: true
+          Value: false
         link_5:
-          Value: true
+          Value: false
         link_6:
-          Value: true
+          Value: false
         start_of_service:
-          Value: true
+          Value: false
         tool0:
           Value: true
         world:
-          Value: true
+          Value: false
       Marker Scale: 1
       Name: TF
       Show Arrows: true
@@ -263,7 +268,15 @@ Visualization Manager:
       Marker Topic: /move_group/stomp_trajectory
       Name: Marker
       Namespaces:
-        optimized: true
+        {}
+      Queue Size: 100
+      Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /tango_visualization
+      Name: Marker
+      Namespaces:
+        {}
       Queue Size: 100
       Value: true
   Enabled: true
@@ -293,10 +306,10 @@ Visualization Manager:
         Z: 2.23518e-07
       Name: Current View
       Near Clip Distance: 0.01
-      Pitch: 0.129797
+      Pitch: 0.264797
       Target Frame: world
       Value: XYOrbit (rviz)
-      Yaw: 0.281765
+      Yaw: 5.90495
     Saved: ~
 Window Geometry:
   Displays:
@@ -312,5 +325,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1828
-  X: 62
+  X: 55
   Y: 14
