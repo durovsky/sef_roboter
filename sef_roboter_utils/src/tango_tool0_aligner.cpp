@@ -30,7 +30,6 @@ int main(int argc, char** argv){
   tf::Vector3 orig_position = orig_tool0_pose.getOrigin();
   tf::Quaternion orig_rotation = orig_tool0_pose.getRotation();
 
-  ros::Rate rate(100.0);
   while(nh.ok())
   {
     // Calculate TF
@@ -90,6 +89,5 @@ int main(int argc, char** argv){
     ros::Duration(0.01).sleep();
   }
 
-  rate.sleep();
   return 0;
 }

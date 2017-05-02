@@ -38,16 +38,21 @@ int main(int argc, char **argv)
     std::cin.get();
 
    // Wait for first Tango data
-    listener.waitForTransform("/base_link", "/current_device_pose", ros::Time(0), ros::Duration(0.2));
-    try  { listener.lookupTransform("/base_link", "/current_device_pose", ros::Time(0), current_device_pose); }
+    listener.waitForTransform("/start_of_service", "/current_device_pose", ros::Time(0), ros::Duration(0.2));
+    try  { listener.lookupTransform("/start_of_service", "/current_device_pose", ros::Time(0), current_device_pose); }
     catch (tf::TransformException ex) {ROS_ERROR("%s", ex.what()); }
 
     tf::Vector3 current_position = current_device_pose.getOrigin();
-    goal_pose.position.x = current_position.getX();
-    goal_pose.position.y = current_position.getY();
+    goal_pose.position.x = -current_position.getY();
+    goal_pose.position.y = current_position.getX();
     goal_pose.position.z = current_position.getZ();
 
     tf::Quaternion current_quaternion = current_device_pose.getRotation();
+    tf::Quaternion rotation = tf::createQuaternionFromRPY(0, 1.57, 0);
+
+    // Remove start_of_service model rotation
+    current_quaternion = current_quaternion * rotation;
+
     goal_pose.orientation.x = current_quaternion.getX();
     goal_pose.orientation.y = current_quaternion.getY();
     goal_pose.orientation.z = current_quaternion.getZ();

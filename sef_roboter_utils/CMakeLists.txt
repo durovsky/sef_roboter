@@ -38,6 +38,14 @@ add_executable(
   button_plan_execute
   src/button_plan_execute.cpp)
 
+add_executable(
+  real_time_control
+  src/real_time_control.cpp)
+
+add_executable(
+  accuracy_measurement
+  src/accuracy_measurement.cpp)
+
 add_dependencies(
   control_msg_parser
   ${catkin_EXPORTED_TARGETS})
@@ -49,6 +57,11 @@ add_dependencies(
 
 add_dependencies(
   button_plan_execute
+  ${${PROJECT_NAME}_EXPORTED_TARGETS}
+  ${catkin_EXPORTED_TARGETS})
+
+add_dependencies(
+  real_time_control
   ${${PROJECT_NAME}_EXPORTED_TARGETS}
   ${catkin_EXPORTED_TARGETS})
 
@@ -66,4 +79,12 @@ target_link_libraries(
 
 target_link_libraries(
   button_plan_execute
+  ${catkin_LIBRARIES})
+
+target_link_libraries(
+  real_time_control
+  ${catkin_LIBRARIES})
+
+target_link_libraries(
+  accuracy_measurement
   ${catkin_LIBRARIES})
