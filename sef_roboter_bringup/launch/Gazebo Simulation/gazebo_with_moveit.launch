@@ -27,7 +27,4 @@
     <arg name="debug" value="$(arg debug)"/>
   </include>
 
-  <!-- If database loading was enabled, start mongodb as well -->
-  <include file="$(find sef_roboter_moveit_config)/launch/default_warehouse_db.launch" if="$(arg db)"/>
-
 </launch>
