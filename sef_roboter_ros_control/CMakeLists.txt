@@ -1,33 +1,19 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(sef_roboter_ros_control)
 
-# C++ 11
-set(CMAKE_CXX_FLAGS "-std=c++11 -Wall ${CMAKE_CXX_FLAGS}")
+add_compile_options(-std=c++11)
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
-  message_generation
   ros_control_boilerplate)
 
 include_directories(${CATKIN_INCLUDE_DIRS})
 include_directories(${PROJECT_SOURCE_DIR}/include/)
 include_directories(${ros_control_boilerplate_INCLUDE_DIRS})
 
-add_service_files(
-  FILES
-  homing.srv
-  reference_joint.srv
-)
-
-generate_messages(
-  DEPENDENCIES
-  std_msgs
-)
-
 catkin_package(
   CATKIN_DEPENDS
-    message_runtime
     roscpp
     std_msgs
   INCLUDE_DIRS

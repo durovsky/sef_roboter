@@ -32,7 +32,7 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************/
 
-/* Author: Frantisek Durovsky Coleman
+/* Author: Frantisek Durovsky
    Desc:   ros_control hardware interface for the sef_roboter_sr25 powered by SINAMICS S120 Drives
 */
 
@@ -187,8 +187,8 @@ void SefRoboterHWInterface::initDrives(void)
   ROS_INFO_NAMED("sef_roboter_hw_interface", "Drive 6 initialization telegram sent!");
 }
 
-bool SefRoboterHWInterface::homingCallback(sef_roboter_ros_control::homing::Request &req,
-                                           sef_roboter_ros_control::homing::Response &res)
+bool SefRoboterHWInterface::homingCallback(sef_roboter_msgs::homing::Request &req,
+                                           sef_roboter_msgs::homing::Response &res)
 {
   //Homing
   trajectory_msgs::JointTrajectory armCommand;
@@ -236,8 +236,8 @@ bool SefRoboterHWInterface::homingCallback(sef_roboter_ros_control::homing::Requ
   }
 }
 
-bool SefRoboterHWInterface::referenceJointCallback(sef_roboter_ros_control::reference_joint::Request &req,
-                                                   sef_roboter_ros_control::reference_joint::Response &res)
+bool SefRoboterHWInterface::referenceJointCallback(sef_roboter_msgs::reference_joint::Request &req,
+                                                   sef_roboter_msgs::reference_joint::Response &res)
 {
     int joint_number = req.joint_number;
     bool retval = false;

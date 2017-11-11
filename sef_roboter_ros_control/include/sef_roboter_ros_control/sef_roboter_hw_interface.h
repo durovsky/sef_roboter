@@ -47,8 +47,8 @@
 
 //Headers required for direct homing command
 #include <trajectory_msgs/JointTrajectory.h>
-#include <sef_roboter_ros_control/homing.h>
-#include <sef_roboter_ros_control/reference_joint.h>
+#include <sef_roboter_msgs/homing.h>
+#include <sef_roboter_msgs/reference_joint.h>
 
 namespace sef_roboter_hw_control
 {
@@ -72,12 +72,12 @@ public:
   void initDrives();
 
   /** \brief Callback function for homing service. */
-  bool homingCallback(sef_roboter_ros_control::homing::Request &req,
-                      sef_roboter_ros_control::homing::Response &res);
+  bool homingCallback(sef_roboter_msgs::homing::Request &req,
+                      sef_roboter_msgs::homing::Response &res);
 
   /** \brief Callback function for reference joint service. */
-  bool referenceJointCallback(sef_roboter_ros_control::reference_joint::Request &req,
-                              sef_roboter_ros_control::reference_joint::Response &res);
+  bool referenceJointCallback(sef_roboter_msgs::reference_joint::Request &req,
+                              sef_roboter_msgs::reference_joint::Response &res);
 
   /** \brief Callback function to process drive 1 states */
   void drive01Callback(const std_msgs::UInt8MultiArray::ConstPtr &callback_data);
