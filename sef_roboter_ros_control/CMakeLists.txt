@@ -6,6 +6,7 @@ add_compile_options(-std=c++11)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
+  sef_roboter_msgs
   ros_control_boilerplate)
 
 include_directories(${CATKIN_INCLUDE_DIRS})
@@ -16,6 +17,8 @@ catkin_package(
   CATKIN_DEPENDS
     roscpp
     std_msgs
+    sef_roboter_msgs
+    ros_control_boilerplate
   INCLUDE_DIRS
     include
 )
