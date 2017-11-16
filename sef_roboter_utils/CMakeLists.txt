@@ -16,12 +16,25 @@ find_package(catkin REQUIRED
     tf
 )
 
-catkin_package()
+catkin_package(
+  CATKIN_DEPENDS
+    roscpp
+    moveit_core
+    moveit_ros_planning
+    moveit_ros_planning_interface
+    trajectory_msgs
+    control_msgs
+    std_msgs
+    cmake_modules
+    tf
+  INCLUDE_DIRS
+    include 
+)
 
-find_package(Eigen REQUIRED)
+find_package(Eigen3 REQUIRED)
 
 include_directories(
-  SYSTEM ${EIGEN_INCLUDE_DIRS}
+  SYSTEM ${EIGEN3_INCLUDE_DIRS}
   ${catkin_INCLUDE_DIRS})
 
 add_executable(
