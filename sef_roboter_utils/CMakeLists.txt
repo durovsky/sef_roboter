@@ -27,9 +27,7 @@ catkin_package(
     std_msgs
     cmake_modules
     tf
-  INCLUDE_DIRS
-    include 
-)
+ )
 
 find_package(Eigen3 REQUIRED)
 
