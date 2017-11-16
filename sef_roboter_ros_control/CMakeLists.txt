@@ -9,10 +9,6 @@ find_package(catkin REQUIRED COMPONENTS
   sef_roboter_msgs
   ros_control_boilerplate)
 
-include_directories(${CATKIN_INCLUDE_DIRS})
-include_directories(${PROJECT_SOURCE_DIR}/include/)
-include_directories(${ros_control_boilerplate_INCLUDE_DIRS})
-
 catkin_package(
   CATKIN_DEPENDS
     roscpp
@@ -20,8 +16,10 @@ catkin_package(
     sef_roboter_msgs
     ros_control_boilerplate
   INCLUDE_DIRS
-    include
+    include   
 )
+
+include_directories(include ${CATKIN_INCLUDE_DIRS} ${ros_control_boilerplate_INCLUDE_DIRS})
 
 # SefRoboter Hardware Interface
 add_library(sef_roboter_hw_interface
