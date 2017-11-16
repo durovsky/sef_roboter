@@ -47,8 +47,8 @@
 
 //Headers required for direct homing command
 #include <trajectory_msgs/JointTrajectory.h>
-#include <sef_roboter_msgs/homing.h>
 #include <sef_roboter_msgs/reference_joint.h>
+#include <sef_roboter_msgs/homing.h>
 
 namespace sef_roboter_hw_control
 {
