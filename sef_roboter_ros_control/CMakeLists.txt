@@ -19,7 +19,7 @@ catkin_package(
     include   
 )
 
-include_directories(include ${CATKIN_INCLUDE_DIRS} ${ros_control_boilerplate_INCLUDE_DIRS})
+include_directories(include ${catkin_INCLUDE_DIRS} ${ros_control_boilerplate_INCLUDE_DIRS})
 
 # SefRoboter Hardware Interface
 add_library(sef_roboter_hw_interface
