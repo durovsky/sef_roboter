@@ -7,7 +7,8 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   sef_roboter_msgs
-  ros_control_boilerplate)
+  ros_control_boilerplate
+)
 
 catkin_package(
   CATKIN_DEPENDS
@@ -55,4 +56,4 @@ install(TARGETS
 )
 
 # Install header files
-install(DIRECTORY include/robot_control/ DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})
+install(DIRECTORY include/sef_roboter_ros_control/ DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})
