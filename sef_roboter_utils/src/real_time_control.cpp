@@ -1,6 +1,6 @@
 #include <ros/ros.h>
 #include <sensor_msgs/JointState.h>
-#include <moveit/move_group_interface/move_group.h>
+#include <moveit/move_group_interface/move_group_interface.h>
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
 #include <moveit/robot_model_loader/robot_model_loader.h>
 #include <geometry_msgs/PoseStamped.h>
@@ -28,7 +28,7 @@ int main(int argc, char **argv)
   ros::Duration(5).sleep();
 
   //MoveIt setup
-  moveit::planning_interface::MoveGroup group("manipulator");
+  moveit::planning_interface::MoveGroupInterface group("manipulator");
   moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
 
   robot_model_loader::RobotModelLoader robot_model_loader("robot_description");
