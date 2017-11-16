@@ -38,3 +38,21 @@ target_link_libraries(sef_roboter_hw_main
   ${catkin_LIBRARIES}
 )
 
+## Install ------------------------------------------------------------
+
+# Install libraries
+install(TARGETS
+    sef_roboter_hw_interface
+  LIBRARY DESTINATION
+    ${CATKIN_PACKAGE_LIB_DESTINATION}
+)
+
+# Install executables
+install(TARGETS
+    sef_roboter_hw_main
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+# Install header files
+install(DIRECTORY include/robot_control/ DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})
