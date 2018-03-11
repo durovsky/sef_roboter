@@ -13,6 +13,7 @@ env:
     - USE_DEB=true  ROS_DISTRO="kinetic"   ROS_REPOSITORY_PATH=http://packages.ros.org/ros/ubuntu
 
 install:
+    - git clone --branch=upstream_pathced https://github.com/gavanderhoorn/siemens_drivers.git
     - git clone https://github.com/durovsky/siemens_cp1616.git
     - git clone --recursive https://github.com/davetcoleman/ros_control_boilerplate.git
     - git submodule update --init --recursive
