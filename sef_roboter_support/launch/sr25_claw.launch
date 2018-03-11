@@ -1,0 +1,4 @@
+<?xml version="1.0" ?>
+<launch>
+	<param name="robot_description" command="$(find xacro)/xacro.py '$(find sef_roboter_support)/urdf/sr25_claw.urdf'" />
+</launch>

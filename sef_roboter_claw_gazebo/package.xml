@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<package>
+  <name>sef_roboter_claw_gazebo</name>
+  <version>0.1.0</version>
+  <description>Sef Roboter with gripper Gazebo package</description>
+  <maintainer email="richard.brada@gmail.com">Richard Brada</maintainer>
+  <license>BSD</license>
+ 
+  <buildtool_depend>catkin</buildtool_depend>
+    
+</package>

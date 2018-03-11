@@ -1,0 +1,10 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: sef_roboter_support
+    relative_path: urdf/sr25_claw.urdf
+  SRDF:
+    relative_path: config/sr25_claw.srdf
+  CONFIG:
+    author_name: Richard Brada
+    author_email: richard.brada@gmail.com
+    generated_timestamp: 1520515728
